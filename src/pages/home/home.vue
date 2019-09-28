@@ -1,30 +1,30 @@
 <template>
   <el-container>
     <el-header>
-      <el-tabs>
-        <el-tab-pane label="Overview">
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane name="Overview">
           <span slot="label"><i class="el-icon-date"> Overview</i> </span>
-          <Overview></Overview>
+          <Overview v-if="activeName === 'Overview'"></Overview>
         </el-tab-pane>
-        <el-tab-pane label="Repositories">
+        <el-tab-pane name="Repositories">
           <span slot="label"><i class="el-icon-notebook-2"> Repositories</i> </span>
-          <Repositories></Repositories>
+          <Repositories v-if="activeName === 'Repositories'"></Repositories>
         </el-tab-pane>
-        <el-tab-pane label="Projects">
+        <el-tab-pane name="Projects">
           <span slot="label"><i class="el-icon-s-data"> Projects</i> </span>
           <Projects></Projects>
         </el-tab-pane>
-        <el-tab-pane label="Wiki">
+        <el-tab-pane name="Wiki">
           <span slot="label"><i class="el-icon-reading"> Wiki</i> </span>
-          <Overview></Overview>
+          <Wiki></Wiki>
         </el-tab-pane>
-        <el-tab-pane label="Fragments">
+        <el-tab-pane name="Fragments">
           <span slot="label"><i class="el-icon-tickets"> Fragments</i> </span>
-          <Overview></Overview>
+          <Fragments></Fragments>
         </el-tab-pane>
-        <el-tab-pane label="Stars">
+        <el-tab-pane name="Stars">
           <span slot="label"><i class="el-icon-star-off"> Stars</i> </span>
-          <Overview></Overview>
+          <Stars></Stars>
         </el-tab-pane>
       </el-tabs>
     </el-header>
@@ -45,10 +45,15 @@ import Stars from './stars'
 
 export default {
   name: 'home',
-  components: {Overview},
+  components: {Overview, Repositories, Projects, Wiki, Fragments, Stars},
   data() {
     return {
-      username: this.$route.params.username
+      username: this.$route.params.username,
+      activeName: 'Overview'
+    }
+  },
+  methods: {
+    handleClick(tab) {
     }
   }
 }

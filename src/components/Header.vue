@@ -12,7 +12,7 @@
         <div class="header-menu">
           <ul>
             <li class="menu-item" @click="toPages('/')">Overview</li>
-            <li class="menu-item" @click="toPages('/articles')">Articles</router-link></li>
+            <li class="menu-item" @click="toPages('/articles')">Articles</li>
             <li class="menu-item" @click="toPages('/labels')">Labels</li>
             <li class="menu-item">About</li>
           </ul>
@@ -28,7 +28,7 @@
     <div class="drop-menu" v-show="dropMenu">
       <ul>
         <li class="menu-item" @click="toPages('/')">Overview</li>
-        <li class="menu-item" @click="toPages('/articles')">Articles</router-link></li>
+        <li class="menu-item" @click="toPages('/articles')">Articles</li>
         <li class="menu-item" @click="toPages('/labels')">Labels</li>
         <li class="menu-item">About</li>
       </ul>
@@ -39,8 +39,18 @@
 <script>
 export default {
   name: 'Header',
+  data() {
+    return {
+      isLogin: false,
+      dropMenu: false
+    }
+  },
   methods: {
-    toPages() {
+    toPages(route) {
+      this.$router.push(route)
+      this.dropMenu = false
+    },
+    login() {
     }
   }
 }
@@ -89,7 +99,7 @@ export default {
   height: 24px;
   color: rgba(255, 255, 255, 0.75);
   margin-right: 10px;
-  background-image: url(http://ovs5x36k4.bkt.clouddn.com/%E8%8F%9C%E5%8D%95.png);
+  background-image: url(https://avatars1.githubusercontent.com/u/33676932?s=40&v=4);
 }
 
 .menu-icon:hover {
@@ -165,7 +175,7 @@ export default {
 .avatar {
   height: 20px;
   width: 20px;
-  background: url(http://ovs5x36k4.bkt.clouddn.com/06.jpg);
+  background: url(https://avatars1.githubusercontent.com/u/33676932?s=40&v=4);
   background-size: 20px 20px;
   border-radius: 3px;
   cursor: pointer;
