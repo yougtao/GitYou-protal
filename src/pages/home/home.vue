@@ -55,5 +55,10 @@ export default {
 </script>
 
 <style scoped>
-
+.el-container {
+  margin: 30px auto;
+  
+  max-width: 1024px;
+  
+}
 </style>
