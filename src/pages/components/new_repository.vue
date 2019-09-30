@@ -24,8 +24,8 @@
       </div>
       <div class="repository-status">
         <template>
-          <el-radio v-model="repository.status" label="public">Pubilc</el-radio>
-          <el-radio v-model="repository.status" label="private">Private</el-radio>
+          <el-radio v-model="repository.secret" label="0">Pubilc</el-radio>
+          <el-radio v-model="repository.secret" label="1">Private</el-radio>
         </template>
       </div>
       <el-button type="success" @click="createRepository">创建 Repository</el-button>
@@ -46,7 +46,7 @@ export default {
         userId: 10000,
         name: '',
         description: '',
-        status: 'public'
+        secret: '0'  // 公开
       }
     }
   },
@@ -57,7 +57,7 @@ export default {
       this.$http.post('repo/repository', this.repository).then(res => {
         this.$message.success('创建成功')
       }).catch(res => {
-        this.$message.error('创建失败')
+        this.$message.error('用户验证失败')
       })
     },
     import_repository() {

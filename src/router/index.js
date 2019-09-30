@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import Index from '@/pages/index'
 import Article from '@/pages/article/article'
+import Login from '@/pages/commons/login'
 import Home from '@/pages/repositories/home'
 import NewRepository from '@/pages/components/new_repository'
 import ImportRepository from '@/pages/components/import_repository'
@@ -20,6 +21,10 @@ export default new Router({
       path: '/articles',
       name: 'article',
       component: Article
+    }, {
+      path: '/login',
+      name: 'login',
+      component: Login
     }, {
       path: '/repositories/new',
       name: 'new_repository',
