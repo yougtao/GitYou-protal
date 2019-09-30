@@ -12,6 +12,7 @@
         <div class="header-menu">
           <ul>
             <li class="menu-item" @click="toPages('/')">Overview</li>
+            <li class="menu-item" @click="toPages('/repositories')">Repositories</li>
             <li class="menu-item" @click="toPages('/articles')">Articles</li>
             <li class="menu-item" @click="toPages('/labels')">Labels</li>
             <li class="menu-item">About</li>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="search-div">
-      <el-input v-model="input" placeholder="Find a repository..."></el-input>
+      <el-input v-model="condition.search" size="medium" placeholder="Find a repository..."></el-input>
       <el-dropdown trigger="click" @command="conditionType">
         <el-button size="medium">
           Type: {{condition.type}}<i class="el-icon-arrow-down el-icon--right"></i>
@@ -68,6 +68,7 @@ export default {
         pageNum: 0
       },
       condition: {
+        search: '',
         type: 'All',
         language: 'All'
       },
@@ -106,7 +107,7 @@ export default {
       this.condition.language = item
     },
     new_repository() {
-      this.$router.push({path: '/new_repository'})
+      this.$router.push({path: '/repositories/new'})
     }
   },
   mounted() {

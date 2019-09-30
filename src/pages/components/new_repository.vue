@@ -1,7 +1,7 @@
 <template>
   <div CLASS="content">
     <div class="content-title">
-      <h3>创建一个新的Repository</h3>
+      <h2>创建一个新的Repository</h2>
       <p>A repository contains all project files, including the revision history. Already have a project repository elsewhere?</p>
       <p><a @click="import_repository" href="javascript:void(0)">Import a repository.</a></p>
     </div>
@@ -61,7 +61,7 @@ export default {
       })
     },
     import_repository() {
-      this.$router.push({path: '/import_repository'})
+      this.$router.push({path: '/repositories/import'})
     }
   }
 }
@@ -78,6 +78,10 @@ export default {
   border-bottom: 1px solid #e1e4e8;
   margin-bottom: 30px;
   text-align: left;
+}
+
+.content-title a {
+  text-decoration-line: none;
 }
 
 .content-info {
