@@ -28,7 +28,7 @@
           <el-dropdown-item command="Vue">Vue</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-button type="success" icon="el-icon-notebook-2" size="medium">New</el-button>
+      <el-button @click="new_repository" type="success" icon="el-icon-notebook-2" size="medium">New</el-button>
     </div>
     <div class="content">
       <el-row class="repo" v-for="(repo,index) in repositories" :key="index">
@@ -104,6 +104,9 @@ export default {
     },
     conditionLanguage(item) {
       this.condition.language = item
+    },
+    new_repository() {
+      this.$router.push({path: '/new_repository'})
     }
   },
   mounted() {
