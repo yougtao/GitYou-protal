@@ -33,7 +33,7 @@
     <div class="content">
       <el-row class="repo" v-for="(repo,index) in repositories" :key="index">
         <el-col :span="12">
-          <div class="repo-title"><h3><a href="">{{ repo.name }}</a></h3></div>
+          <div class="repo-title"><h3><a @click="toPage(repo.username, repo.name)" href="javascript:void(0)">{{ repo.name }}</a></h3></div>
           <div class="repo-description"><p>{{ repo.description }}</p></div>
           <div class="repo-info">
             <span v-if="repo.language !==0">
@@ -108,6 +108,10 @@ export default {
     },
     new_repository() {
       this.$router.push({path: '/repositories/new'})
+    },
+    toPage(user, name) {
+      console.log(user, name)
+      this.$router.push('/' + user + '/' + name)
     }
   },
   mounted() {

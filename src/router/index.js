@@ -7,7 +7,9 @@ import Login from '@/pages/commons/login'
 import Home from '@/pages/repositories/home'
 import NewRepository from '@/pages/components/new_repository'
 import ImportRepository from '@/pages/components/import_repository'
-import Repository from '@/pages/code/nav'
+
+import Repository from '@/pages/code/frame'
+import Code from '@/pages/code/code'
 
 Vue.use(Router)
 
@@ -38,9 +40,14 @@ export default new Router({
       name: 'home',
       component: Home
     }, {
-      path: '/repositories/:username/:repository',
+      path: '/:username/:repository',
       name: 'repository',
-      component: Repository
+      component: Repository,
+      children: [{
+        path: '/',
+        name: 'code',
+        component: Code
+      }]
     }
   ]
 })
