@@ -52,6 +52,7 @@ export default {
       this.dropMenu = false
     },
     login() {
+      this.$router.push('/login')
     }
   }
 }

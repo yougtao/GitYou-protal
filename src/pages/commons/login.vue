@@ -7,10 +7,10 @@
       <h2>Sign in to GitYou</h2>
       <div class="login-card">
         <label>Username or email address</label>
-        <input placeholder=""/>
+        <input v-model="user.username" placeholder=""/>
         <label>Password <a @click="resetPassword" href="javascript:void(0)">Forget password?</a></label>
-        <input/>
-        <button>Sign in</button>
+        <input v-model="user.password"/>
+        <button @click="login">Sign in</button>
       </div>
       <div class="content-logup">
         <p>New to GitHub? <a href="javascript:void(0)">Create an account.</a></p>
@@ -29,15 +29,28 @@ export default {
       user: {
         username: '',
         password: ''
-      }
+      },
+      backPath: ''  // 记录上一个url
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm._data.backPath = from.path
+    })
   },
   methods: {
     resetPassword() {
       console.log('密码重置')
     },
     login() {
-      this.$http.post('/user/auth')
+      this.$http.post('/user/auth/login', this.user).then(res => {
+        this.$message.success('登录成功')
+        const user = res.data.data
+        window.localStorage.setItem('User-info', JSON.stringify(user))
+        this.$router.push(this.backPath)
+      }).catch(res => {
+        this.$message.error('登录失败')
+      })
     }
   }
 }
@@ -55,7 +68,7 @@ a {
   max-width: 300px;
 }
 
-.content-main h2{
+.content-main h2 {
   font-size: 24px;
   font-weight: 500;
 }
