@@ -10,13 +10,14 @@
         <el-dropdown>
           <el-button size="medium">
             <img src="https://avatars1.githubusercontent.com/u/33676932?s=40&v=4"/>
-            <span>{{user.name}}</span><i class="el-icon-arrow-down el-icon--right"></i>
+            <span>{{repository.username}}</span><i class="el-icon-arrow-down el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>黄金糕</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-input size="medium" v-model="repository.name" placeholder="Repository Name"></el-input>
+        <el-input size="medium" v-model="repository.name" maxlength="50"
+                  show-word-limit placeholder="Repository Name"></el-input>
       </div>
       <div class="repository-description">
         Description
@@ -38,17 +39,19 @@ export default {
   name: 'new_repository',
   data() {
     return {
-      user: {
-        userId: 10000,
-        name: 'xiaorui'
-      },
       repository: {
         userId: 10000,
+        username: '',
         name: '',
         description: '',
         secret: '0'  // 公开
       }
     }
+  },
+  mounted() {
+    const user = JSON.parse(window.atob('eyJpZCI6MTAwMDAsInVzZXJuYW1lIjoieGlhb3J1aSIsImV4cCI6NTMwMjQ2NDEzNX0'))
+    this.repository.userId = user.id
+    this.repository.username = user.username
   },
   methods: {
     createRepository() {
@@ -56,8 +59,9 @@ export default {
       if (this.repository === '') return
       this.$http.post('repo/repository', this.repository).then(res => {
         this.$message.success('创建成功')
+        this.$router.push('/' + this.repository.username + '/' + this.repository.name)
       }).catch(res => {
-        this.$message.error('用户验证失败')
+        this.$message.error('创建失败')
       })
     },
     import_repository() {

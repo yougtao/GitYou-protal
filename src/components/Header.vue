@@ -46,6 +46,9 @@ export default {
       dropMenu: false
     }
   },
+  mounted() {
+    console.log('查询')
+  },
   methods: {
     toPages(route) {
       this.$router.push(route)

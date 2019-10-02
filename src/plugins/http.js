@@ -5,7 +5,7 @@ const HttpServer = {}
 
 HttpServer.install = Vue => {
   axios.defaults.baseURL = 'http://gityou.com/api'
-  axios.defaults.timeout = 1500
+  axios.defaults.timeout = 6000
   axios.defaults.withCredentials = true // 携带cookie
 
   axios.interceptors.request.use(config => {
