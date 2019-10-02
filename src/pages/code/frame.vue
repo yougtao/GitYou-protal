@@ -9,9 +9,9 @@
       </span>
       </div>
       <div class="content-nav">
-        <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tabs v-model="activeName" type="card" @tab-click="">
           <el-tab-pane label="Code" name="code"></el-tab-pane>
-          <el-tab-pane label="settings" name="settings"></el-tab-pane>
+          <el-tab-pane v-if="user.username === repository.user" label="Settings" name="settings"></el-tab-pane>
         </el-tabs>
       </div>
     </div>
@@ -24,14 +24,15 @@
 </template>
 
 <script>
-import Code from './code.vue'
-
 export default {
   name: 'frame',
-  components: {Code},
   data() {
     return {
       activeName: 'code',
+      user: {
+        id: '',
+        username: ''
+      },
       repository: {
         user: '',
         name: ''
@@ -41,6 +42,10 @@ export default {
   mounted() {
     this.repository.user = this.$route.params.username
     this.repository.name = this.$route.params.repository
+
+    const userStr = document.cookie.split(';')[0].split('=')[1].split('.')[1]
+    this.user = JSON.parse(window.atob(userStr))
+    console.log(this.user)
   },
   methods: {}
 }
@@ -55,8 +60,14 @@ a {
 }
 
 .content-head {
-  padding: 20px 0;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e4e7ed;
+  padding-top: 20px;
+  background-color: #fafbfc;
+}
+
+.content-head .el-tabs__header {
+  margin-bottom: 0;
 }
 
 .content-title {
