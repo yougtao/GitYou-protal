@@ -9,17 +9,17 @@
       </span>
       </div>
       <div class="content-nav">
-        <el-tabs v-model="activeName" type="card" @tab-click="">
+        <el-tabs v-model="activeName" type="card" @tab-click="changeTab">
           <el-tab-pane label="Code" name="code"></el-tab-pane>
+          <el-tab-pane label="Branches" name="branches"></el-tab-pane>
+          <el-tab-pane label="Commits" name="commits"></el-tab-pane>
           <el-tab-pane v-if="user.username === repository.user" label="Settings" name="settings"></el-tab-pane>
         </el-tabs>
       </div>
     </div>
-    
     <div class="content-main">
       <router-view/>
     </div>
-  
   </div>
 </template>
 
@@ -29,6 +29,7 @@ export default {
   data() {
     return {
       activeName: 'code',
+      lastTab: 'code',
       user: {
         id: '',
         username: ''
@@ -45,9 +46,24 @@ export default {
 
     const userStr = document.cookie.split(';')[0].split('=')[1].split('.')[1]
     this.user = JSON.parse(window.atob(userStr))
-    console.log(this.user)
   },
-  methods: {}
+  updated() {
+    this.activeName = this.$route.name
+    this.lastTab = this.activeName
+  },
+  methods: {
+    changeTab() {
+      if (this.lastTab == this.activeName)
+        return
+      if (this.activeName == 'code') {
+        this.lastTab = this.activeName
+        this.$router.push('/' + this.repository.user + '/' + this.repository.name)
+      } else {
+        this.lastTab = this.activeName
+        this.$router.push('/' + this.repository.user + '/' + this.repository.name + '/' + this.activeName)
+      }
+    }
+  }
 }
 </script>
 

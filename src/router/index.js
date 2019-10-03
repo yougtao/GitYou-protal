@@ -9,7 +9,10 @@ import NewRepository from '@/pages/components/new_repository'
 import ImportRepository from '@/pages/components/import_repository'
 
 import Repository from '@/pages/code/frame'
-import Code from '@/pages/code/code'
+import Branch from '@/pages/code/branch'
+import Commit from '@/pages/code/commit'
+import Commits from '@/pages/code/commits'
+import Branches from '@/pages/code/branches'
 
 Vue.use(Router)
 
@@ -44,9 +47,28 @@ export default new Router({
       name: 'repository',
       component: Repository,
       children: [{
-        path: '/',
-        name: 'code',
-        component: Code
+        path: '',
+        name: 'branch',
+        component: Branch,
+        params: {
+          branch: 'master'
+        }
+      }, {
+        path: 'branch/:branch',
+        name: 'branch',
+        component: Branch
+      }, {
+        path: 'commit/:commit',
+        name: 'commit',
+        component: Commit
+      }, {
+        path: 'commits',
+        name: 'commits',
+        component: Commits
+      }, {
+        path: 'branches',
+        name: 'branches',
+        component: Branches
       }]
     }
   ]

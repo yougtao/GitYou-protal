@@ -6,7 +6,7 @@
     <div class="content-button">
       <el-dropdown class="brand-btn">
         <el-button size="small">
-          Branch: {{ repository.curBrand }}<i class="el-icon-arrow-down el-icon--right"></i>
+          Branch: {{ repository.curBranch }}<i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item v-for="brand in brands" :key="brand">{{brand}}}</el-dropdown-item>
@@ -45,7 +45,7 @@
         </el-table-column>
         <el-table-column width="600">
           <template slot-scope="scope">
-            <a class="content-code-message" @click="toCommit(scope.row.commit)" href="javascript:void(0)">{{ showTime(scope.row.message)
+            <a class="content-code-message" @click="toCommit(scope.row.commit)" href="javascript:void(0)">{{ scope.row.message
               }}</a>
           </template>
         </el-table-column>
@@ -62,7 +62,7 @@
 
 <script>
 export default {
-  name: 'code',
+  name: 'branch',
   data() {
     return {
       clone: 'HTTP',
@@ -76,7 +76,7 @@ export default {
           message: '',
           time: '4 days ago'
         },
-        curBrand: 'master'
+        curBranch: ''
       },
       brands: [],
       tags: [],
@@ -86,12 +86,14 @@ export default {
   mounted() {
     this.repository.user = this.$route.params.username
     this.repository.name = this.$route.params.repository
+    this.repository.curBranch = this.$route.params.branch
 
     // 获取仓库基本信息
     this.$http.get('/repo/repository/name', {
       params: {
         user: this.repository.user,
-        name: this.repository.name
+        name: this.repository.name,
+        branch: this.repository.curBranch
       }
     }).then(({data}) => {
       this.repository.id = data.id
@@ -102,7 +104,7 @@ export default {
       this.repository.type = data.type
       this.repository.language = data.language
       this.repository.createTime = data.createTime
-    }).catch()
+    })
 
     // 文件列表
     this.fileList(this.repository.user, this.repository.name, '')
@@ -180,7 +182,7 @@ export default {
     },
     /* 转到提交 */
     toCommit(name) {
-      console.log('已经转到 commit: ', name)
+      this.$router.push('/' + this.repository.user + '/' + this.repository.name + '/commit/' + name)
     }
   }
 }
@@ -243,7 +245,7 @@ button {
   font-weight: 400;
 }
 
-/* content-coed */
+/* content-code */
 .content-code {
   border: 1px solid #dfe2e5;
   border-top: none;
