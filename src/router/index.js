@@ -23,10 +23,6 @@ export default new Router({
       name: 'index',
       component: Index
     }, {
-      path: '/articles',
-      name: 'article',
-      component: Article
-    }, {
       path: '/login',
       name: 'login',
       component: Login
@@ -38,10 +34,15 @@ export default new Router({
       path: '/repositories/import',
       name: 'import_repository',
       component: ImportRepository
-    }, {
-      path: '/repositories',
+    },
+    {
+      path: '/:username/repositories',
       name: 'home',
       component: Home
+    }, {
+      path: '/:username/articles',
+      name: 'articles',
+      component: Article
     }, {
       path: '/:username/:repository',
       name: 'repository',

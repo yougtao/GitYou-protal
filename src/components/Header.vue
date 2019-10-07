@@ -12,8 +12,8 @@
         <div class="header-menu">
           <ul>
             <li class="menu-item" @click="toPages('/')">Overview</li>
-            <li class="menu-item" @click="toPages('/repositories')">Repositories</li>
-            <li class="menu-item" @click="toPages('/articles')">Articles</li>
+            <li class="menu-item" @click="toUserPage('/repositories')">Repositories</li>
+            <li class="menu-item" @click="toUserPage('/articles')">Articles</li>
             <li class="menu-item" @click="toPages('/labels')">Labels</li>
             <li class="menu-item">About</li>
           </ul>
@@ -22,7 +22,7 @@
       <div class="icon-box">
         <div class="message"><i class="iconfont icon-xiaoxi"></i></div>
         <div class="add" @click="toPages('/new')">+</div>
-        <div class="avatar" v-show="isLogin"></div>
+        <div class="avatar" v-show="isLogin">{{ user.username }}</div>
         <div class="login" v-show="!isLogin" @click="login">Login</div>
       </div>
     </div>
@@ -43,16 +43,32 @@ export default {
   data() {
     return {
       isLogin: false,
-      dropMenu: false
+      dropMenu: false,
+      user: {
+        username: ''
+      }
     }
   },
   mounted() {
-    console.log('查询')
+    this.$http.post('/user/auth/verify').then(({data}) => {
+      this.user.username = data.data.username
+      this.isLogin = true
+    }).catch(() => {
+      this.user.username = ''
+      this.isLogin = false
+    })
   },
   methods: {
     toPages(route) {
-      this.$router.push(route)
       this.dropMenu = false
+      this.$router.push(route)
+    },
+    toUserPage(route) {
+      if (this.isLogin == true) {
+        this.$router.push('/' + this.user.username + route)
+      } else {
+        this.$router.push(route)
+      }
     },
     login() {
       this.$router.push('/login')

@@ -205,6 +205,10 @@ button {
   font-weight: 500;
 }
 
+.content-description {
+  text-align: left;
+}
+
 .content-button {
   margin: 10px 0;
 }

@@ -61,7 +61,9 @@ export default {
   name: 'Repositories',
   data() {
     return {
-      userId: 1,
+      user: {
+        username: ''
+      },
       pageInfo: {
         total: 0,
         page: 1,
@@ -115,12 +117,13 @@ export default {
     }
   },
   mounted() {
-    const data = {
+    this.user.username = this.$route.params.username
+
+    this.$http.get('/repo/repository/page', {
       params: {
-        userId: 10000
+        user: this.user.username
       }
-    }
-    this.$http.get('/repo/repository/page', data).then(res => {
+    }).then(res => {
       this.repositories = res.data.list
       this.pageInfo.total = res.data.total
       this.pageInfo.pageNum = res.data.pageTotal
