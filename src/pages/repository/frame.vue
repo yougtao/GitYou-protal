@@ -3,7 +3,7 @@
     <div class="content-head">
       <div class="content-title">
       <span>
-        <a href="javascript:void(0)" class="title-name">{{ repository.user }}</a>
+        <a @click="toUser(repository.user)" href="javascript:void(0)" class="title-name">{{ repository.user }}</a>
         <span>/</span>
         <a href="javascript:void(0)" class="title-name">{{ repository.name }}</a>
       </span>
@@ -63,6 +63,9 @@ export default {
         this.lastTab = this.activeName
         this.$router.push('/' + this.repository.user + '/' + this.repository.name + '/' + this.activeName)
       }
+    },
+    toUser(user) {
+      this.$router.push('/' + user + '/home')
     }
   }
 }

@@ -249,7 +249,7 @@ button {
   font-weight: 400;
 }
 
-/* content-code */
+/* content-repository */
 .content-code {
   border: 1px solid #dfe2e5;
   border-top: none;

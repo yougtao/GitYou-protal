@@ -109,7 +109,7 @@ export default {
       this.condition.language = item
     },
     new_repository() {
-      this.$router.push({path: '/repositories/new'})
+      this.$router.push({path: '/home/new'})
     },
     toPage(user, name) {
       console.log(user, name)

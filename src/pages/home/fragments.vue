@@ -1,12 +1,10 @@
 <template>
-  <div>
-    article
-  </div>
+  <div>代码片段</div>
 </template>
 
 <script>
 export default {
-  name: 'article'
+  name: 'Fragments'
 }
 </script>
 

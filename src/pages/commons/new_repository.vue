@@ -65,7 +65,7 @@ export default {
       })
     },
     import_repository() {
-      this.$router.push({path: '/repositories/import'})
+      this.$router.push({path: '/home/import'})
     }
   }
 }

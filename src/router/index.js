@@ -2,18 +2,24 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Index from '@/pages/index'
-import Article from '@/pages/article/article'
 import Login from '@/pages/commons/login'
-import Home from '@/pages/repositories/home'
-import NewRepository from '@/pages/components/new_repository'
-import ImportRepository from '@/pages/components/import_repository'
+import NewRepository from '@/pages/commons/new_repository'
+import ImportRepository from '@/pages/commons/import_repository'
 
-import Repository from '@/pages/code/frame'
-import Branch from '@/pages/code/branch'
-import Commit from '@/pages/code/commit'
-import Commits from '@/pages/code/commits'
-import Branches from '@/pages/code/branches'
-import Issues from '@/pages/code/issues'
+import Home from '@/pages/home/frame'
+import Overview from '@/pages/home/overview'
+import Repositories from '@/pages/home/repositories'
+import Articles from '@/pages/article/articles'
+import Fragments from '@/pages/fragment/fragments'
+import Stars from '@/pages/star/stars'
+
+/* 代码仓库相关 */
+import Repository from '@/pages/repository/frame'
+import Branch from '@/pages/repository/branch'
+import Commit from '@/pages/repository/commit'
+import Commits from '@/pages/repository/commits'
+import Branches from '@/pages/repository/branches'
+import Issues from '@/pages/repository/issues'
 
 Vue.use(Router)
 
@@ -28,23 +34,41 @@ export default new Router({
       name: 'login',
       component: Login
     }, {
-      path: '/repositories/new',
+      path: '/home/new',
       name: 'new_repository',
       component: NewRepository
     }, {
-      path: '/repositories/import',
+      path: '/home/import',
       name: 'import_repository',
       component: ImportRepository
     },
     {
-      path: '/:username/repositories',
+      path: '/:username',
       name: 'home',
-      component: Home
-    }, {
-      path: '/:username/articles',
-      name: 'articles',
-      component: Article
-    }, {
+      component: Home,
+      children: [{
+        path: '',
+        name: 'overview',
+        component: Overview
+      }, {
+        path: 'repositories',
+        name: 'home',
+        component: Repositories
+      }, {
+        path: 'articles',
+        name: 'articles',
+        component: Articles
+      }, {
+        path: 'fragments',
+        name: 'fragments',
+        component: Fragments
+      }, {
+        path: 'stars',
+        name: 'stars',
+        component: Stars
+      }]
+    },
+    {
       path: '/:username/:repository',
       name: 'repository',
       component: Repository,

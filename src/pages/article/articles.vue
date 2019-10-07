@@ -1,10 +1,12 @@
 <template>
-  
+  <div>
+    articles
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'Fragments'
+  name: 'article'
 }
 </script>
 
