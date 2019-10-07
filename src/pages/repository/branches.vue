@@ -43,8 +43,12 @@ export default {
     })
   },
   methods: {
-    toBranch(name) {},
-    toUser(name) {}
+    toBranch(name) {
+      this.$router.push('/' + this.repository.user + '/' + this.repository.name + '/branch/' + name)
+    },
+    toUser(name) {
+      this.$router.push('/' + name + '/repositories')
+    }
   },
   computed: {
     showTime() {
