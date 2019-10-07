@@ -13,6 +13,7 @@
           <el-tab-pane label="Code" name="code"></el-tab-pane>
           <el-tab-pane label="Branches" name="branches"></el-tab-pane>
           <el-tab-pane label="Commits" name="commits"></el-tab-pane>
+          <el-tab-pane label="Issues" name="issues"></el-tab-pane>
           <el-tab-pane v-if="user.username === repository.user" label="Settings" name="settings"></el-tab-pane>
         </el-tabs>
       </div>

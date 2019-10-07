@@ -13,6 +13,7 @@ import Branch from '@/pages/code/branch'
 import Commit from '@/pages/code/commit'
 import Commits from '@/pages/code/commits'
 import Branches from '@/pages/code/branches'
+import Issues from '@/pages/code/issues'
 
 Vue.use(Router)
 
@@ -70,6 +71,10 @@ export default new Router({
         path: 'branches',
         name: 'branches',
         component: Branches
+      }, {
+        path: 'issues',
+        name: 'issues',
+        component: Issues
       }]
     }
   ]
