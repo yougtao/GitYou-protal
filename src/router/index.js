@@ -34,11 +34,11 @@ export default new Router({
       name: 'login',
       component: Login
     }, {
-      path: '/home/new',
+      path: '/repository/new',
       name: 'new_repository',
       component: NewRepository
     }, {
-      path: '/home/import',
+      path: '/repository/import',
       name: 'import_repository',
       component: ImportRepository
     },
@@ -52,7 +52,7 @@ export default new Router({
         component: Overview
       }, {
         path: 'repositories',
-        name: 'home',
+        name: 'repositories',
         component: Repositories
       }, {
         path: 'articles',
@@ -74,27 +74,31 @@ export default new Router({
       component: Repository,
       children: [{
         path: '',
-        name: 'branch',
+        name: 'repository-home',
         component: Branch,
         params: {
           branch: 'master'
         }
       }, {
         path: 'branch/:branch',
-        name: 'branch',
+        name: 'repository-branch',
+        component: Branch
+      }, {
+        path: 'branch/:branch/*',
+        name: 'branch-file',
         component: Branch
       }, {
         path: 'commit/:commit',
         name: 'commit',
         component: Commit
       }, {
-        path: 'commits',
-        name: 'commits',
-        component: Commits
-      }, {
         path: 'branches',
         name: 'branches',
         component: Branches
+      }, {
+        path: 'commits/:branch',
+        name: 'commits',
+        component: Commits
       }, {
         path: 'issues',
         name: 'issues',

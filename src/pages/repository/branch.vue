@@ -26,7 +26,7 @@
     </div>
     <div class="content-title">
       <img/>
-      <a class="commit-author" href="javascript:void(0)">{{ repository.user }}</a>
+      <a class="commit-author" @click="toCommits(repository.user)" href="javascript:void(0)">{{ repository.user }}</a>
       <a class="commit-content" @click="toCommit(repository.lastCommit.name)" href="javascript:void(0)">{{ repository.lastCommit.message
         }}</a>
       <div class=" commit-info">
@@ -35,28 +35,37 @@
         <span class="commit-time">{{ showTime(repository.lastCommit.time) }}</span>
       </div>
     </div>
-    <div class="content-code">
-      <el-table :data="files" :show-header="false" style="width: 100%" size="small">
-        <el-table-column prop="name" width="232" fit="false">
-          <template slot-scope="scope">
-            <i class="el-icon-document"></i>
-            <a href="javascript:void(0)">{{ scope.row.name }}</a>
-          </template>
-        </el-table-column>
-        <el-table-column width="600">
-          <template slot-scope="scope">
-            <a class="content-code-message" @click="toCommit(scope.row.commit)" href="javascript:void(0)">{{ scope.row.message
-              }}</a>
-          </template>
-        </el-table-column>
-        <el-table-column align="right">
-          <template slot-scope="scope">
-            <span>{{ showTime(scope.row.time) }}</span>
-          </template>
-        </el-table-column>
-      </el-table>
+    <div class="content-files">
+      <table>
+        <tbody>
+        <tr v-if="repository.curPath !=''">
+          <td class="file-name">
+            <i class="el-icon-folder"></i>
+            <a @click="toFolder('..')" href="javascript:void(0)">..</a>
+          </td>
+        </tr>
+        <tr v-for="file in files" :key="file.name">
+          <td class="file-name">
+            <template v-if="file.folder">
+              <i class="el-icon-folder"></i>
+              <a @click="toFolder(file.name)" href="javascript:void(0)">{{ file.name }}</a>
+            </template>
+            <template v-else>
+              <i class="el-icon-document"></i>
+              <a @click="toFile(file.name)" href="javascript:void(0)">{{ file.name }}</a>
+            </template>
+          </td>
+          <td class="file-commit-message">
+            <a @click="toCommit(file.commit)" href="javascript:void(0)">{{ file.message }}</a>
+          </td>
+          <td class="file-commit-time">
+            <span>{{ showTime(file.time) }}</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="content-file"></div>
+    <div class="content-code"></div>
   </div>
 </template>
 
@@ -76,48 +85,36 @@ export default {
           message: '',
           time: '4 days ago'
         },
-        curBranch: ''
+        curBranch: '',
+        curPath: ''
       },
       brands: [],
       tags: [],
       files: []
     }
   },
+  beforeRouteUpdate() {
+    console.log('genginx')
+  },
   mounted() {
     this.repository.user = this.$route.params.username
     this.repository.name = this.$route.params.repository
-    this.repository.curBranch = this.$route.params.branch
+    if (this.$route.params.branch != null)
+      this.repository.curBranch = this.$route.params.branch
+
+    const pathMatch = this.$route.params.pathMatch
+    console.log(pathMatch)
+    if (pathMatch != null)
+      this.repository.curPath = pathMatch
 
     // 获取仓库基本信息
-    this.$http.get('/repo/repository/name', {
-      params: {
-        user: this.repository.user,
-        name: this.repository.name,
-        branch: this.repository.curBranch
-      }
-    }).then(({data}) => {
-      this.repository.id = data.id
-      this.repository.name = data.name
-      this.repository.userId = data.userId
-      this.repository.user = data.username
-      this.repository.description = data.description
-      this.repository.type = data.type
-      this.repository.language = data.language
-      this.repository.createTime = data.createTime
-    })
+    this.repositoryInfo()
 
-    // 文件列表
-    this.fileList(this.repository.user, this.repository.name, '')
+    // 获取文件列表
+    this.fileList(this.repository.user, this.repository.name, this.repository.curBranch, this.repository.curPath)
 
-    // 最后一次提交
-    this.$http.get('/repo/commit/last', {
-      params: {
-        user: this.repository.user,
-        name: this.repository.name
-      }
-    }).then(({data}) => {
-      this.repository.lastCommit = data
-    })
+    // 获取最近一次提交
+    this.lastCommit()
   },
   computed: {
     clonePath() {
@@ -168,21 +165,78 @@ export default {
       if (this.clone === 'HTTP') this.repository.clone = this.repository.cloneHTTP
       else if (this.clone === 'SSH') this.repository.clone = this.repository.cloneSSH
     },
-    fileList(user, name, path) {
-      // 获取文件信息
+    repositoryInfo() {
+      this.$http.get('/repo/repository/name', {
+        params: {
+          user: this.repository.user,
+          name: this.repository.name
+        }
+      }).then(({data}) => {
+        this.repository.id = data.id
+        this.repository.name = data.name
+        this.repository.userId = data.userId
+        this.repository.user = data.username
+        this.repository.description = data.description
+        this.repository.type = data.type
+        this.repository.language = data.language
+        if (this.repository.curBranch == null || this.repository.curBranch == '')
+          this.repository.curBranch = data.defaultBranch
+        this.repository.createTime = data.createTime
+      })
+    },
+    // 获取文件列表
+    fileList(user, name, branch, path) {
       this.$http.get('/repo/file', {
         params: {
           user: user,
           name: name,
+          branch: branch,
           path: path
         }
       }).then(({data}) => {
         this.files = data
       })
     },
+    lastCommit() {
+      this.$http.get('/repo/commit/last', {
+        params: {
+          user: this.repository.user,
+          name: this.repository.name,
+          path: this.repository.curPath
+        }
+      }).then(({data}) => {
+        this.repository.lastCommit = data
+      })
+    },
     /* 转到提交 */
     toCommit(name) {
       this.$router.push('/' + this.repository.user + '/' + this.repository.name + '/commit/' + name)
+    },
+    toCommits(user) {
+      console.log('hello')
+      this.$router.push({
+        path: '/' + this.repository.user + '/' + this.repository.name + '/commits/' + this.repository.curBranch,
+        query: {author: user}
+      })
+    },
+    toFolder(folder) {
+      let baseUrl = '/' + this.repository.user + '/' + this.repository.name + '/branch/' + this.repository.curBranch + '/'
+      if (folder == '..') {
+        const index = this.repository.curPath.lastIndexOf('/')
+        this.repository.curPath = this.repository.curPath.substring(0, index == undefined ? 0 : index)
+      } else {
+        if (this.repository.curPath == '')
+          this.repository.curPath += folder
+        else
+          this.repository.curPath += '/' + folder
+      }
+      this.$router.replace(baseUrl + this.repository.curPath)
+      // 切换文件列表
+      this.fileList(this.repository.user, this.repository.name, this.repository.curBranch, this.repository.curPath)
+      this.lastCommit()
+    },
+    toFile(file) {
+      console.log('转到文件', file)
     }
   }
 }
@@ -250,15 +304,55 @@ button {
 }
 
 /* content-repository */
-.content-code {
+.content-files {
   border: 1px solid #dfe2e5;
   border-top: none;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
 }
 
-.content-code-message {
+.content-files table {
+  width: 100%;
+  font-size: 14px;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.content-files tr:hover {
+  background-color: #f6f8fa;
+}
+
+.content-files tr:first-child td {
+  border: none;
+}
+
+.content-files td {
+  padding: 5px 10px;
+  border-top: 1px solid #dfe2e5;
+  border-left: none;
+  border-right: none;
+}
+
+
+.file-name {
+  width: 220px;
+  text-align: left;
+}
+
+.file-commit-message {
+  text-align: left;
+}
+
+.file-commit-time {
+  text-align: right;
+}
+
+.file-commit-message a {
   color: #586069;
+}
+
+.file-commit-message a:hover {
+  color: #0366d6;
 }
 
 

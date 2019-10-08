@@ -59,13 +59,16 @@ export default {
       if (this.activeName == 'code') {
         this.lastTab = this.activeName
         this.$router.push('/' + this.repository.user + '/' + this.repository.name)
+      } else if (this.activeName == 'commits') {
+        this.lastTab = this.activeName
+        this.$router.push('/' + this.repository.user + '/' + this.repository.name + '/commits/master')
       } else {
         this.lastTab = this.activeName
         this.$router.push('/' + this.repository.user + '/' + this.repository.name + '/' + this.activeName)
       }
     },
-    toUser(user) {
-      this.$router.push('/' + user + '/home')
+    toUser() {
+      this.$router.push('/' + this.repository.user + '/repositories')
     }
   }
 }

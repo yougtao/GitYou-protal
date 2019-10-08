@@ -50,7 +50,11 @@ export default {
       curBranch: 'master',
       repository: {
         user: '',
-        name: ''
+        name: '',
+        curBranch: ''
+      },
+      conditions: {
+        author: ''
       },
       branches: ['master'],
       commits: []
@@ -59,11 +63,15 @@ export default {
   mounted() {
     this.repository.user = this.$route.params.username
     this.repository.name = this.$route.params.repository
+    this.repository.curBranch = this.$route.params.branch
+    this.conditions.author = this.$route.query.author
 
     this.$http.get('/repo/commit/list', {
       params: {
         user: this.repository.user,
         name: this.repository.name,
+        branch: this.repository.curBranch,
+        author: this.conditions.author,
         page: 1
       }
     }).then(({data}) => {
@@ -83,7 +91,6 @@ export default {
           last = cur
         }
       })
-      console.log(this.commits)
     })
   },
   methods: {
@@ -91,7 +98,12 @@ export default {
       this.$router.push('/' + this.repository.user + '/' + this.repository.name + '/commit/' + name)
     },
     toUser(user) {
-      this.$router.push('/' + user + '/repositories')
+      if (this.conditions.author != '')
+        this.$router.push({query: {author: user}})
+      else
+        this.$router.push({
+          query: {author: 'master'}
+        })
     }
   }
 }
