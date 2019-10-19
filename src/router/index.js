@@ -88,7 +88,7 @@ export default new Router({
         name: 'branch-file',
         component: Branch
       }, {
-        path: 'commit/:commit',
+        path: 'commit/:commitId',
         name: 'commit',
         component: Commit
       }, {
