@@ -31,15 +31,18 @@ export default {
       repository: {
         user: '',
         name: '',
-        commitId: ''
+        commitId: '',
+        curBranch: 'master'
       },
       fileList: []
     }
   },
   mounted() {
+    console.log(this.$route)
     this.repository.user = this.$route.params.username
     this.repository.name = this.$route.params.repository
     this.repository.commitId = this.$route.params.commitId
+    this.repository.curBranch = this.$route.params.branch
     // 获取修改列表
     this.changeList()
   },
@@ -57,7 +60,8 @@ export default {
       })
     },
     toFile(path) {
-      console.log('to file: ', path)
+      const repo = '/' + this.repository.user + '/' + this.repository.name
+      this.$router.push(repo + '/blob/' + this.repository.curBranch + '/' + path)
     },
     showFile(path) {}
   },

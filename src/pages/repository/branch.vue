@@ -186,7 +186,7 @@ export default {
     },
     // 获取文件列表
     fileList(user, name, branch, path) {
-      this.$http.get('/repo/file', {
+      this.$http.get('/repo/file/list', {
         params: {
           user: user,
           name: name,
@@ -236,7 +236,11 @@ export default {
       this.lastCommit()
     },
     toFile(file) {
-      console.log('转到文件', file)
+      const base = '/' + this.repository.user + '/' + this.repository.name + '/blob/' + this.repository.curBranch
+      if (this.repository.curPath === '')
+        this.$router.push(base + '/' + file)
+      else
+        this.$router.push(base + '/' + this.repository.curPath + '/' + file)
     }
   }
 }

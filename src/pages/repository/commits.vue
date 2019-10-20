@@ -95,7 +95,15 @@ export default {
   },
   methods: {
     toCommit(name) {
-      this.$router.push('/' + this.repository.user + '/' + this.repository.name + '/commit/' + name)
+      // this.$router.push('/' + this.repository.user + '/' + this.repository.name + '/commit/' + name)
+      this.$router.push({
+        name: 'commit', params: {
+          username: this.repository.user,
+          repository: this.repository.name,
+          commitId: name,
+          branch: this.repository.curBranch
+        }
+      })
     },
     toUser(user) {
       if (this.conditions.author != '')

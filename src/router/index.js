@@ -16,6 +16,7 @@ import Stars from '@/pages/star/stars'
 /* 代码仓库相关 */
 import Repository from '@/pages/repository/frame'
 import Branch from '@/pages/repository/branch'
+import Blob from '@/pages/repository/blob'
 import Commit from '@/pages/repository/commit'
 import Commits from '@/pages/repository/commits'
 import Branches from '@/pages/repository/branches'
@@ -85,8 +86,12 @@ export default new Router({
         component: Branch
       }, {
         path: 'branch/:branch/*',
-        name: 'branch-file',
+        name: 'branch-fileList',
         component: Branch
+      }, {
+        path: 'blob/:branch/*',
+        name: 'blob-content',
+        component: Blob
       }, {
         path: 'commit/:commitId',
         name: 'commit',

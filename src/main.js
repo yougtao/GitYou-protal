@@ -3,7 +3,8 @@
 import Vue from 'vue'
 
 import ElementUI from 'element-ui'
-import HttpServer from '@/plugins/http.js'
+import HttpServer from './plugins/http.js'
+import Highlight from './plugins/highlight.js'
 
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/css/reset.css'
@@ -15,6 +16,7 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 Vue.use(HttpServer)
+Vue.use(Highlight)
 
 /* eslint-disable no-new */
 new Vue({
