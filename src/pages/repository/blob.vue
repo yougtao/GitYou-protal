@@ -2,15 +2,14 @@
   <div>
     <!-- 面包屑导航 -->
     <div class="content-nav">
-      <a @click="toRepository" href="javascript:void(0)">{{repository.name}}</a>
+      <a @click="toRepository" href="javascript:void(0)" class="nav-repository">{{repository.name}}</a>
       <span v-for="(folder,index) in file.paths">
         <span> / </span>
-        <a @click="toFolder(index)" href="javascript:void(0)">{{folder}}</a>
+        <a @click="toFolder(index)" href="javascript:void(0)" class="nav-folder">{{folder}}</a>
       </span>
       <span>
-        <span> / {{file.name}}</span>
+        <span class="nav-file"> / {{file.name}}</span>
       </span>
-    
     </div>
     <!-- commit信息 -->
     <div></div>
@@ -89,12 +88,26 @@ a {
   text-decoration-line: none;
 }
 
-/* 导航 */
+/* 导航区域 */
 .content-nav {
   padding: 16px;
   text-align: left;
 }
 
+.nav-repository {
+  font-size: 18px;
+  font-weight: 500;
+  color: #0366d6;
+}
+
+.nav-folder {
+  color: #0366d6;
+}
+
+.nav-file {
+  font-weight: 500;
+  color: #000;
+}
 
 /* 文件信息 */
 .content-code {
