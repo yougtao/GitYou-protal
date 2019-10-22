@@ -4,12 +4,12 @@
       <p>{{ repository.description }}</p>
     </div>
     <div class="content-button">
-      <el-dropdown class="brand-btn">
+      <el-dropdown class="branch-btn" trigger="click" @command="switchBranch">
         <el-button size="small">
           Branch: {{ repository.curBranch }}<i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item v-for="brand in brands" :key="brand">{{brand}}}</el-dropdown-item>
+          <el-dropdown-item v-for="branch in branches" :key="branch.name" :command="branch.name">{{branch.name}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
       <el-popover class="clone-btn" placement="bottom" title="克隆仓库" width="400" trigger="click">
@@ -88,7 +88,7 @@ export default {
         curBranch: '',
         curPath: ''
       },
-      brands: [],
+      branches: [],
       tags: [],
       files: []
     }
@@ -103,15 +103,17 @@ export default {
       this.repository.curBranch = this.$route.params.branch
 
     const pathMatch = this.$route.params.pathMatch
-    console.log(pathMatch)
     if (pathMatch != null)
       this.repository.curPath = pathMatch
 
     // 获取仓库基本信息
     this.repositoryInfo()
 
+    // 获取branch列表
+    this.branchList()
+
     // 获取文件列表
-    this.fileList(this.repository.user, this.repository.name, this.repository.curBranch, this.repository.curPath)
+    this.fileList(this.repository.curBranch, this.repository.curPath)
 
     // 获取最近一次提交
     this.lastCommit()
@@ -185,16 +187,26 @@ export default {
       })
     },
     // 获取文件列表
-    fileList(user, name, branch, path) {
+    fileList(branch, path) {
       this.$http.get('/repo/file/list', {
         params: {
-          user: user,
-          name: name,
+          user: this.repository.user,
+          name: this.repository.name,
           branch: branch,
           path: path
         }
       }).then(({data}) => {
         this.files = data
+      })
+    },
+    branchList() {
+      this.$http.get('/repo/branch/list', {
+        params: {
+          user: this.repository.user,
+          name: this.repository.name
+        }
+      }).then(({data}) => {
+        this.branches = data
       })
     },
     lastCommit() {
@@ -207,6 +219,11 @@ export default {
       }).then(({data}) => {
         this.repository.lastCommit = data
       })
+    },
+    /* 切换branch */
+    switchBranch(branch) {
+      this.repository.curBranch = branch
+      this.fileList(this.repository.curBranch, this.repository.curPath)
     },
     /* 转到提交 */
     toCommit(name) {
@@ -232,7 +249,7 @@ export default {
       }
       this.$router.replace(baseUrl + this.repository.curPath)
       // 切换文件列表
-      this.fileList(this.repository.user, this.repository.name, this.repository.curBranch, this.repository.curPath)
+      this.fileList(this.repository.curBranch, this.repository.curPath)
       this.lastCommit()
     },
     toFile(file) {
@@ -271,7 +288,7 @@ button {
   margin: 10px 0;
 }
 
-.brand-btn {
+.branch-btn {
 }
 
 .clone-btn {

@@ -113,7 +113,6 @@ export default {
     },
     switchBranch(branch) {
       this.repository.curBranch = branch
-      console.log('切换', branch)
       this.commitList()
     },
     toCommit(name) {
