@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="content-branch">
-      <el-dropdown>
+      <el-dropdown trigger="click" @command="switchBranch">
         <el-button size="medium">
           <span>Branch: </span>
-          <span>{{ curBranch }}</span>
+          <span>{{ repository.curBranch }}</span>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item v-for="branch in branches" :key="branch">{{ branch }}</el-dropdown-item>
+          <el-dropdown-item v-for="branch in branches" :key="branch.name" :command="branch.name">{{ branch.name }}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -47,11 +47,10 @@ export default {
   name: 'commits',
   data() {
     return {
-      curBranch: 'master',
       repository: {
         user: '',
         name: '',
-        curBranch: ''
+        curBranch: 'master'
       },
       conditions: {
         author: ''
@@ -66,34 +65,57 @@ export default {
     this.repository.curBranch = this.$route.params.branch
     this.conditions.author = this.$route.query.author
 
-    this.$http.get('/repo/commit/list', {
-      params: {
-        user: this.repository.user,
-        name: this.repository.name,
-        branch: this.repository.curBranch,
-        author: this.conditions.author,
-        page: 1
-      }
-    }).then(({data}) => {
-      let last = new Date(0).toLocaleDateString()
-      let curGroup = {}
-      data.forEach(e => {
-        const cur = new Date(e.time * 1000).toLocaleDateString()
-        if (last == cur) {
-          curGroup.group.push(e)
-        } else {
-          curGroup = {
-            time: cur,
-            group: []
-          }
-          this.commits.push(curGroup)
-          curGroup.group.push(e)
-          last = cur
-        }
-      })
-    })
+    // 查询branch列表
+    this.branchList()
+
+    // 查询commits列表
+    this.commitList()
   },
   methods: {
+    branchList() {
+      this.$http.get('/repo/branch/list', {
+        params: {
+          user: this.repository.user,
+          name: this.repository.name
+        }
+      }).then(({data}) => {
+        this.branches = data
+      })
+    },
+    commitList() {
+      this.$http.get('/repo/commit/list', {
+        params: {
+          user: this.repository.user,
+          name: this.repository.name,
+          branch: this.repository.curBranch,
+          author: this.conditions.author,
+          page: 1
+        }
+      }).then(({data}) => {
+        let last = new Date(0).toLocaleDateString()
+        this.commits = []
+        let curGroup = {}
+        data.forEach(e => {
+          const cur = new Date(e.time * 1000).toLocaleDateString()
+          if (last == cur) {
+            curGroup.group.push(e)
+          } else {
+            curGroup = {
+              time: cur,
+              group: []
+            }
+            this.commits.push(curGroup)
+            curGroup.group.push(e)
+            last = cur
+          }
+        })
+      })
+    },
+    switchBranch(branch) {
+      this.repository.curBranch = branch
+      console.log('切换', branch)
+      this.commitList()
+    },
     toCommit(name) {
       // this.$router.push('/' + this.repository.user + '/' + this.repository.name + '/commit/' + name)
       this.$router.push({
