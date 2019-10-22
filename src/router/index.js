@@ -21,6 +21,7 @@ import Commit from '@/pages/repository/commit'
 import Commits from '@/pages/repository/commits'
 import Branches from '@/pages/repository/branches'
 import Issues from '@/pages/repository/issues'
+import Settings from '@/pages/repository/settings'
 
 Vue.use(Router)
 
@@ -108,6 +109,10 @@ export default new Router({
         path: 'issues',
         name: 'issues',
         component: Issues
+      }, {
+        path: 'settings',
+        name: 'settings',
+        component: Settings
       }]
     }
   ]
