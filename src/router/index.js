@@ -6,10 +6,10 @@ import Login from '@/pages/commons/login'
 import NewRepository from '@/pages/commons/new_repository'
 import ImportRepository from '@/pages/commons/import_repository'
 
-import Home from '@/pages/home/frame'
+import HomeFrame from '@/pages/home/frame'
 import Overview from '@/pages/home/overview'
 import Repositories from '@/pages/home/repositories'
-import Articles from '@/pages/article/articles'
+import Articles from '@/pages/home/articles'
 import Fragments from '@/pages/fragment/fragments'
 import Stars from '@/pages/star/stars'
 
@@ -23,7 +23,53 @@ import Branches from '@/pages/repository/branches'
 import Issues from '@/pages/repository/issues'
 import Settings from '@/pages/repository/settings'
 
+/* Article相关 */
+
+/* Fragment相关 */
+
 Vue.use(Router)
+
+/* repository子路由 */
+const repositoryChildren = [
+  {
+    path: '',
+    name: 'repository-home',
+    component: Branch,
+    params: {branch: 'master'}
+  }, {
+    path: 'branch/:branch',
+    name: 'repository-branch',
+    component: Branch
+  }, {
+    path: 'branch/:branch/*',
+    name: 'branch-fileList',
+    component: Branch
+  }, {
+    path: 'blob/:branch/*',
+    name: 'blob-content',
+    component: Blob
+  }, {
+    path: 'commit/:commitId',
+    name: 'commit',
+    component: Commit
+  }, {
+    path: 'branches',
+    name: 'branches',
+    component: Branches
+  }, {
+    path: 'commits/:branch',
+    name: 'commits',
+    component: Commits
+  }, {
+    path: 'issues',
+    name: 'issues',
+    component: Issues
+  }, {
+    path: 'settings',
+    name: 'settings',
+    component: Settings
+  }]
+
 
 export default new Router({
   routes: [
@@ -43,11 +89,9 @@ export default new Router({
       path: '/repository/import',
       name: 'import_repository',
       component: ImportRepository
-    },
-    {
+    }, {
       path: '/:username',
-      name: 'home',
-      component: Home,
+      component: HomeFrame,
       children: [{
         path: '',
         name: 'overview',
@@ -69,51 +113,11 @@ export default new Router({
         name: 'stars',
         component: Stars
       }]
-    },
-    {
+    }, {
       path: '/:username/:repository',
       name: 'repository',
       component: Repository,
-      children: [{
-        path: '',
-        name: 'repository-home',
-        component: Branch,
-        params: {
-          branch: 'master'
-        }
-      }, {
-        path: 'branch/:branch',
-        name: 'repository-branch',
-        component: Branch
-      }, {
-        path: 'branch/:branch/*',
-        name: 'branch-fileList',
-        component: Branch
-      }, {
-        path: 'blob/:branch/*',
-        name: 'blob-content',
-        component: Blob
-      }, {
-        path: 'commit/:commitId',
-        name: 'commit',
-        component: Commit
-      }, {
-        path: 'branches',
-        name: 'branches',
-        component: Branches
-      }, {
-        path: 'commits/:branch',
-        name: 'commits',
-        component: Commits
-      }, {
-        path: 'issues',
-        name: 'issues',
-        component: Issues
-      }, {
-        path: 'settings',
-        name: 'settings',
-        component: Settings
-      }]
+      children: repositoryChildren
     }
   ]
 })
