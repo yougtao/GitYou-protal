@@ -27,11 +27,11 @@
     <div class="content-title">
       <img/>
       <a class="commit-author" @click="toCommits(repository.user)" href="javascript:void(0)">{{ repository.user }}</a>
-      <a class="commit-content" @click="toCommit(repository.lastCommit.name)" href="javascript:void(0)">{{ repository.lastCommit.message
+      <a class="commit-content" @click="toCommit(repository.lastCommit.commit)" href="javascript:void(0)">{{ repository.lastCommit.message
         }}</a>
       <div class=" commit-info">
-        <a class="commit-name" @click="toCommit(repository.lastCommit.name)" href="javascript:void(0)">{{
-          repository.lastCommit.name.substring(0,8) }}</a>
+        <a class="commit-name" @click="toCommit(repository.lastCommit.commit)" href="javascript:void(0)">{{
+          repository.lastCommit.commit }}</a>
         <span class="commit-time">{{ showTime(repository.lastCommit.time) }}</span>
       </div>
     </div>
@@ -83,7 +83,7 @@ export default {
         lastCommit: {
           name: '',
           message: '',
-          time: '4 days ago'
+          time: ''
         },
         curBranch: '',
         curPath: ''
@@ -114,9 +114,6 @@ export default {
 
     // 获取文件列表
     this.fileList(this.repository.curBranch, this.repository.curPath)
-
-    // 获取最近一次提交
-    this.lastCommit()
   },
   computed: {
     clonePath() {
@@ -197,6 +194,16 @@ export default {
         }
       }).then(({data}) => {
         this.files = data
+        // 查找最近的一次提交
+        let lastTime = 0
+        let lastCommit = -1
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].time > lastTime) {
+            lastTime = data[i].time
+            lastCommit = i
+          }
+        }
+        this.repository.lastCommit = data[lastCommit]
       })
     },
     branchList() {
@@ -207,17 +214,6 @@ export default {
         }
       }).then(({data}) => {
         this.branches = data
-      })
-    },
-    lastCommit() {
-      this.$http.get('/repo/commit/last', {
-        params: {
-          user: this.repository.user,
-          name: this.repository.name,
-          path: this.repository.curPath
-        }
-      }).then(({data}) => {
-        this.repository.lastCommit = data
       })
     },
     /* 切换branch */
@@ -250,7 +246,7 @@ export default {
       this.$router.replace(baseUrl + this.repository.curPath)
       // 切换文件列表
       this.fileList(this.repository.curBranch, this.repository.curPath)
-      this.lastCommit()
+
     },
     toFile(file) {
       const base = '/' + this.repository.user + '/' + this.repository.name + '/blob/' + this.repository.curBranch

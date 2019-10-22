@@ -38,7 +38,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route)
     this.repository.user = this.$route.params.username
     this.repository.name = this.$route.params.repository
     this.repository.commitId = this.$route.params.commitId
@@ -55,7 +54,6 @@ export default {
           commit: this.repository.commitId
         }
       }).then(({data}) => {
-        console.log(data)
         this.fileList = data
       })
     },
