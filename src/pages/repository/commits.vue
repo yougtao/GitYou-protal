@@ -43,7 +43,7 @@
       <el-pagination
           background :hide-on-single-page="true" layout="prev, pager, next"
           @current-change="changePage"
-          :current-page="page.curPage" :page-size="4" :total="page.total">
+          :current-page="page.curPage" :page-size="28" :total="page.total">
       </el-pagination>
     </div>
   </div>
@@ -107,10 +107,14 @@ export default {
           page: this.page.curPage
         }
       }).then(({data}) => {
+        const {list, pageTotal, total} = data
+        this.page.total = total
+        this.page.pageTotal = pageTotal
+
         let last = new Date(0).toLocaleDateString()
         this.commits = []
         let curGroup = {}
-        data.forEach(e => {
+        list.forEach(e => {
           const cur = new Date(e.time * 1000).toLocaleDateString()
           if (last == cur) {
             curGroup.group.push(e)

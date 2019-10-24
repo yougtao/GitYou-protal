@@ -24,8 +24,8 @@
             <span class="file-name" :class="'file-type-'+file.type">{{file.name}}</span>
           </a>
           <span class="file-status">
-            <span class="color-add">+{{file.additions?file.additions:0}}&nbsp</span>
-            <span class="color-delete">-{{file.deletions?file.deletions:0}}&nbsp</span>
+            <span class="color-add">+{{file.additions || 0}}&nbsp</span>
+            <span class="color-delete">-{{file.deletions || 0}}&nbsp</span>
           </span>
           <span class="file-path">
             <a @click="toFile(file.path)" href="javascript:void(0)">{{getFilePath(file)}}</a>
