@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="content-branch">
+    <div class="content-btn">
       <el-dropdown trigger="click" @command="switchBranch">
-        <el-button size="medium">
+        <el-button size="small">
           <span>Branch: </span>
           <span>{{ repository.curBranch }}</span>
           <i class="el-icon-arrow-down el-icon--right"></i>
@@ -175,8 +175,16 @@ a:hover {
   text-decoration-line: underline;
 }
 
-.content-branch {
-  margin-bottom: 20px;
+button {
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.content-btn {
+  margin: 20px 0;
+  padding: 0 30px;
+  text-align: left;
 }
 
 .content-commits {

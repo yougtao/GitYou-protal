@@ -4,25 +4,29 @@
       <p>{{ repository.description }}</p>
     </div>
     <div class="content-button">
-      <el-dropdown class="branch-btn" trigger="click" @command="switchBranch">
-        <el-button size="small">
-          Branch: {{ repository.curBranch }}<i class="el-icon-arrow-down el-icon--right"></i>
-        </el-button>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item v-for="branch in branches" :key="branch.name" :command="branch.name">{{branch.name}}</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      <el-popover class="clone-btn" placement="bottom" title="克隆仓库" width="400" trigger="click">
-        <div>
-          <el-input readonly v-model="clonePath" size="small" style="margin: 10px 0 20px">
-            <el-select v-model="clone" slot="prepend" style="width:110px;">
-              <el-option label="Use HTTP" value="HTTP"></el-option>
-              <el-option label="Use SSH" value="SSH"></el-option>
-            </el-select>
-          </el-input>
-        </div>
-        <el-button slot="reference" type="success" size="small">Clone<i class="el-icon-arrow-down el-icon--right"></i></el-button>
-      </el-popover>
+      <div class="btn-left">
+        <el-dropdown class="branch-btn" trigger="click" @command="switchBranch">
+          <el-button size="small">
+            Branch: {{ repository.curBranch }}<i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item v-for="branch in branches" :key="branch.name" :command="branch.name">{{branch.name}}</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+      <div class="btn-right">
+        <el-popover class="clone-btn" placement="bottom" title="克隆仓库" width="400" trigger="click">
+          <div>
+            <el-input readonly v-model="clonePath" size="small" style="margin: 10px 0 20px;user-select: all">
+              <el-select v-model="clone" slot="prepend" style="width:110px;">
+                <el-option label="Use HTTP" value="HTTP"></el-option>
+                <el-option label="Use SSH" value="SSH"></el-option>
+              </el-select>
+            </el-input>
+          </div>
+          <el-button slot="reference" type="success" size="small">Clone<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+        </el-popover>
+      </div>
     </div>
     <div class="content-title">
       <img/>
@@ -280,17 +284,28 @@ button {
 
 .content-description {
   text-align: left;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .content-button {
-  margin: 10px 0;
+  margin: 20px 0;
+  font-size: 0;
 }
 
-.branch-btn {
+.btn-left {
+  display: inline-block;
+  width: 50%;
+  text-align: left;
+}
+
+.btn-right {
+  display: inline-block;
+  width: 50%;
+  text-align: right;
 }
 
 .clone-btn {
-  margin-left: 700px;
 }
 
 .content-title {

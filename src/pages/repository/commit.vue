@@ -69,7 +69,7 @@ export default {
         user: '',
         name: '',
         commitId: '',
-        curBranch: 'master'
+        curBranch: ''
       },
       commit: {
         name: '',
@@ -85,6 +85,7 @@ export default {
     this.repository.user = this.$route.params.username
     this.repository.name = this.$route.params.repository
     this.repository.commitId = this.$route.params.commitId
+    this.repository.curBranch = this.$parent.repository.curBranch
 
     // 获取commit信息和修改列表
     this.commitInfo()
