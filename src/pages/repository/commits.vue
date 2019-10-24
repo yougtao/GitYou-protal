@@ -39,6 +39,13 @@
         </li>
       </ul>
     </div>
+    <div class="content-paginate">
+      <el-pagination
+          background :hide-on-single-page="true" layout="prev, pager, next"
+          @current-change="changePage"
+          :current-page="page.curPage" :page-size="4" :total="page.total">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -50,10 +57,15 @@ export default {
       repository: {
         user: '',
         name: '',
-        curBranch: 'master'
+        curBranch: ''
       },
       conditions: {
         author: ''
+      },
+      page: {
+        total: 0,
+        pageTotal: 0,
+        curPage: 1
       },
       branches: ['master'],
       commits: []
@@ -62,7 +74,10 @@ export default {
   mounted() {
     this.repository.user = this.$route.params.username
     this.repository.name = this.$route.params.repository
-    this.repository.curBranch = this.$route.params.branch
+    if (this.$route.name === 'commits')
+      this.repository.curBranch = this.$route.params.branch
+    else if (this.$route.name === 'commits-query')
+      this.repository.curBranch = ''
     this.conditions.author = this.$route.query.author
 
     // 查询branch列表
@@ -89,7 +104,7 @@ export default {
           name: this.repository.name,
           branch: this.repository.curBranch,
           author: this.conditions.author,
-          page: 1
+          page: this.page.curPage
         }
       }).then(({data}) => {
         let last = new Date(0).toLocaleDateString()
@@ -112,7 +127,14 @@ export default {
       })
     },
     switchBranch(branch) {
+      this.$router.push({name: 'commits', params: {branch: branch}})
+      this.$parent.repository.curBranch = branch
       this.repository.curBranch = branch
+      this.conditions.author = ''
+      this.commitList()
+    },
+    changePage(page) {
+      this.page.curPage = page
       this.commitList()
     },
     toCommit(name) {
@@ -127,12 +149,13 @@ export default {
       })
     },
     toUser(user) {
-      if (this.conditions.author != '')
+      if (this.conditions.author === user)
+        return
+      if (this.$route.name === 'commits') {
         this.$router.push({query: {author: user}})
-      else
-        this.$router.push({
-          query: {author: 'master'}
-        })
+      } else if (this.$route.name == 'commits-query')
+        this.$router.push({query: {author: user}})
+      this.commitList()
     }
   }
 }
@@ -214,6 +237,11 @@ a:hover {
 
 .commit-message {
   margin-left: 10px;
+}
+
+/* 分页*/
+.content-paginate {
+  margin: 20px 0;
 }
 
 </style>

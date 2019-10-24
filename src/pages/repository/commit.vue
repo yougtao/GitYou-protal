@@ -177,7 +177,7 @@ export default {
       this.$router.push(repo + '/blob/' + this.repository.curBranch + '/' + path)
     },
     toCommit(author) {
-      this.$router.push({name: 'commits', params: {branch: 'all'}, query: {author: author}})
+      this.$router.push({name: 'commits-query', query: {author: author}})
     },
     toBranch(branch) {
       console.log('跳转到branch: ', branch)

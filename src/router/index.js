@@ -61,6 +61,10 @@ const repositoryChildren = [
     name: 'commits',
     component: Commits
   }, {
+    path: 'commits',
+    name: 'commits-query',
+    component: Commits
+  }, {
     path: 'issues',
     name: 'issues',
     component: Issues
@@ -115,7 +119,6 @@ export default new Router({
       }]
     }, {
       path: '/:username/:repository',
-      name: 'repository',
       component: Repository,
       children: repositoryChildren
     }

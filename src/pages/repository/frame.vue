@@ -37,7 +37,8 @@ export default {
       },
       repository: {
         user: '',
-        name: ''
+        name: '',
+        curBranch: ''
       }
     }
   },
@@ -61,7 +62,7 @@ export default {
         this.$router.push('/' + this.repository.user + '/' + this.repository.name)
       } else if (this.activeName == 'commits') {
         this.lastTab = this.activeName
-        this.$router.push('/' + this.repository.user + '/' + this.repository.name + '/commits/master')
+        this.$router.push('/' + this.repository.user + '/' + this.repository.name + '/commits/' + this.repository.curBranch)
       } else {
         this.lastTab = this.activeName
         this.$router.push('/' + this.repository.user + '/' + this.repository.name + '/' + this.activeName)

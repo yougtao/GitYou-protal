@@ -99,8 +99,8 @@ export default {
   mounted() {
     this.repository.user = this.$route.params.username
     this.repository.name = this.$route.params.repository
-    if (this.$route.params.branch != null)
-      this.repository.curBranch = this.$route.params.branch
+    if (this.$parent.repository.curBranch !== '')
+      this.repository.curBranch = this.$parent.repository.curBranch
 
     const pathMatch = this.$route.params.pathMatch
     if (pathMatch != null)
@@ -178,8 +178,10 @@ export default {
         this.repository.description = data.description
         this.repository.type = data.type
         this.repository.language = data.language
-        if (this.repository.curBranch == null || this.repository.curBranch == '')
+        if (this.repository.curBranch == null || this.repository.curBranch == '') {
+          this.$parent.repository.curBranch = data.defaultBranch
           this.repository.curBranch = data.defaultBranch
+        }
         this.repository.createTime = data.createTime
       })
     },
@@ -218,6 +220,7 @@ export default {
     },
     /* 切换branch */
     switchBranch(branch) {
+      this.$parent.repository.curBranch = branch
       this.repository.curBranch = branch
       this.fileList(this.repository.curBranch, this.repository.curPath)
     },
@@ -226,7 +229,6 @@ export default {
       this.$router.push('/' + this.repository.user + '/' + this.repository.name + '/commit/' + name)
     },
     toCommits(user) {
-      console.log('hello')
       this.$router.push({
         path: '/' + this.repository.user + '/' + this.repository.name + '/commits/' + this.repository.curBranch,
         query: {author: user}
