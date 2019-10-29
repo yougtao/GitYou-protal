@@ -24,6 +24,9 @@
           </li>
         </ul>
       </div>
+      <div class="issue-edit">
+        <smd-editor :commit="commit"></smd-editor>
+      </div>
     </div>
     <div class="content-paginate">
       <el-pagination
@@ -36,8 +39,11 @@
 </template>
 
 <script>
+import SmdEditor from '../../components/basic/SmdEditor'
+
 export default {
   name: 'issues',
+  components: {SmdEditor},
   data() {
     return {
       repository: {
@@ -74,6 +80,9 @@ export default {
     },
     toIssue(id) {
       console.log('跳转到issue')
+    },
+    commit(data) {
+      console.log('提交成功, 数据: ', data)
     },
     /* 改变页码 */
     changePage(page) {
