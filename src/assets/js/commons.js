@@ -5,11 +5,10 @@ function getUser() {
   let cookies = document.cookie.split(';')
   for (let e of cookies) {
     if (e.startsWith(cookieName)) {
-      const value = e.substring(e.indexOf(':') + 1)
+      const value = e.substring(e.indexOf('=') + 1)
       // 分割字符串
       const userInfo = value.split('.')[1]
       let user = window.atob(userInfo)
-
       return JSON.parse(user)
     }
   }

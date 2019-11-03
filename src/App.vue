@@ -10,7 +10,11 @@ import PageHeader from './components/Header'
 
 export default {
   name: 'App',
-  components: {PageHeader}
+  components: {PageHeader},
+  updated() {
+    console.log('根组件(App)更新')
+    PageHeader.updated()
+  }
 }
 </script>
 

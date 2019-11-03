@@ -6,10 +6,11 @@ import Login from '@/pages/commons/login'
 import NewRepository from '@/pages/commons/new_repository'
 import ImportRepository from '@/pages/commons/import_repository'
 
-import UserHome from '@/pages/home/frame'
+import User from '@/pages/home/frame'
 import Overview from '@/pages/home/overview'
 import Repositories from '@/pages/home/repositories'
 import Articles from '@/pages/home/articles'
+import Settings from '@/pages/home/settings'
 import Fragments from '@/pages/fragment/fragments'
 import Stars from '@/pages/star/stars'
 
@@ -22,7 +23,7 @@ import Commits from '@/pages/repository/commits'
 import Branches from '@/pages/repository/branches'
 import Issues from '@/pages/repository/issues'
 import Issue from '@/pages/repository/issue'
-import Settings from '@/pages/repository/settings'
+import RepositorySettings from '@/pages/repository/settings'
 
 /* Article相关 */
 
@@ -30,7 +31,35 @@ import Settings from '@/pages/repository/settings'
 
 Vue.use(Router)
 
-/* repository子路由 */
+/* /:username子路由*/
+const userChildren = [
+  {
+    path: '',
+    name: 'user_home',
+    component: Overview
+  }, {
+    path: 'repositories',
+    name: 'repositories',
+    component: Repositories
+  }, {
+    path: 'articles',
+    name: 'articles',
+    component: Articles
+  }, {
+    path: 'fragments',
+    name: 'fragments',
+    component: Fragments
+  }, {
+    path: 'stars',
+    name: 'stars',
+    component: Stars
+  }, {
+    path: 'settings',
+    name: 'settings',
+    component: Settings
+  }]
+
+/* /:username/:repository子路由 */
 const repositoryChildren = [
   {
     path: '',
@@ -75,8 +104,8 @@ const repositoryChildren = [
     component: Issue
   }, {
     path: 'settings',
-    name: 'settings',
-    component: Settings
+    name: 'repository_settings',
+    component: RepositorySettings
   }]
 
 
@@ -100,28 +129,8 @@ export default new Router({
       component: ImportRepository
     }, {
       path: '/:username',
-      component: UserHome,
-      children: [{
-        path: '',
-        name: 'user_home',
-        component: Overview
-      }, {
-        path: 'repositories',
-        name: 'repositories',
-        component: Repositories
-      }, {
-        path: 'articles',
-        name: 'articles',
-        component: Articles
-      }, {
-        path: 'fragments',
-        name: 'fragments',
-        component: Fragments
-      }, {
-        path: 'stars',
-        name: 'stars',
-        component: Stars
-      }]
+      component: User,
+      children: userChildren
     }, {
       path: '/:username/:repository',
       component: Repository,

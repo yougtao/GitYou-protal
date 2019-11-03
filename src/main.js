@@ -8,7 +8,7 @@ import Highlight from './plugins/highlight.js'
 import Common from './plugins/common'
 
 import 'element-ui/lib/theme-chalk/index.css'
-import './assets/css/commons.css'
+import './assets/css/reset.css'
 
 import App from './App'
 import router from './router'

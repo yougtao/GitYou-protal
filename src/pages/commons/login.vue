@@ -6,11 +6,13 @@
     <div class="content-main">
       <h2>Sign in to GitYou</h2>
       <div class="login-card">
-        <label>Username or email address</label>
-        <input v-model="user.username" placeholder=""/>
-        <label>Password <a @click="resetPassword" href="javascript:void(0)">Forget password?</a></label>
-        <input v-model="user.password"/>
-        <button @click="login">Sign in</button>
+        <form action="#">
+          <label>Username or email address</label>
+          <input type="text" v-model="user.username" placeholder=""/>
+          <label>Password <a @click="resetPassword" href="javascript:void(0)">Forget password?</a></label>
+          <input type="password" v-model="user.password"/>
+          <button @click="login">Sign in</button>
+        </form>
       </div>
       <div class="content-logup">
         <p>New to GitHub? <a href="javascript:void(0)">Create an account.</a></p>
@@ -44,16 +46,12 @@ export default {
     },
     login() {
       this.$http.post('/user/auth/login', this.user).then(({data}) => {
-        this.$message.success({
-          message: '登录成功了',
-          duration: 1200
-        })
+        this.$message.success({message: '登录成功了', duration: 1200})
         const user = data.data
         if (this.backPath === '' || this.backPath === '/')
           this.$router.push({
-            name: 'user_home', params: {
-              username: user.username
-            }
+            name: 'user_home',
+            params: {username: user.username}
           })
         else
           this.$router.push(this.backPath)
