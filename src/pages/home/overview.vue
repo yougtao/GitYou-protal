@@ -80,6 +80,7 @@ export default {
   name: 'overview',
   data() {
     return {
+      user: {},
       activities: [{
         content: '支持使用图标',
         timestamp: '2018-04-12 20:46',
@@ -100,13 +101,14 @@ export default {
       }]
     }
   },
+  mounted() {
+    this.user.username = this.$route.params.username
+  },
   methods: {
     activity(tab, event) {
       console.log(tab)
     }
   }
-
-
 }
 </script>
 

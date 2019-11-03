@@ -78,8 +78,11 @@
         </a>
       </div>
     </div>
-    <div id="md_preview" class="mditor-mini-preview article"></div>
-    <div class="mditor-editor"><textarea id="md_editor"></textarea></div>
+    <div class="mditor-main">
+      <div id="md_preview" class="mditor-mini-preview article"></div>
+      <div class="mditor-mini-edit"><textarea id="md_editor"></textarea></div>
+    
+    </div>
     <div class="mditor-buttons">
       <div class="mditor-btn-commit"></div>
       <button @click="btn_action">提交</button>
@@ -129,13 +132,19 @@ export default {
     this._$viewer = document.getElementById('md_preview')
 
     this.maked = doMaked()
-    this.utils = selection_factory(document)
+    // this.utils = selection_factory(document)
 
   },
   methods: {
     switchPreview() {
       this._$textarea.style.display = 'none'
-      this.render()
+      // 渲染 view
+      let content = this._$textarea.value
+      if (content === '')
+        this._$viewer.innerHTML = '<p>Nothing to preview</p>'
+      else {
+        this._$viewer.innerHTML = this.maked(content)
+      }
       this._$viewer.style.display = 'block'
       this._$btn_edit.classList.remove('active')
       this._$btn_preview.classList.add('active')
@@ -143,16 +152,8 @@ export default {
     switchEdit() {
       this._$textarea.style.display = 'block'
       this._$viewer.style.display = 'none'
-      // this._$viewer.hide().html('')
       this._$btn_edit.classList.add('active')
       this._$btn_preview.classList.remove('active')
-    },
-    render() {
-      // 获取html
-      let content = this._$textarea.value
-      localStorage.setItem('mditor', content)
-
-      this._$viewer.innerHTML = this.maked(content)
     },
     action(name) {
       let config = this.action_config[name]
@@ -212,7 +213,9 @@ export default {
 
 <style>
 @import '../../assets/css/code_style/article.css';
+</style>
 
+<style scoped>
 .mditor-mini {
   position: relative;
   margin: 20px 0;
@@ -293,29 +296,31 @@ export default {
   background-position: -15px 0;
 }
 
+/* main 区域*/
+.mditor-main {
+  padding: 8px;
+  min-height: 160px;
+}
+
 .mditor-mini-preview {
   display: none;
-  min-height: 200px;
-  padding: 30px 20px;
+  padding: 8px;
+  height: 100%;
 }
 
-.mditor-editor {
-  margin: 8px;
+.mditor-mini-edit {
+  padding: 8px;
 }
 
-.mditor-mini textarea {
-  display: block;
+.mditor-main textarea {
   border: 1px solid #d1d5da;
   border-radius: 3px;
-  padding: 8px;
+  resize: vertical;
   box-sizing: border-box;
   width: 100%;
-  min-height: 160px;
-  resize: vertical;
-  font-size: 14px;
-  font-family: inherit;
-  
+  min-height: 140px;
   background-color: #fafbfc;
+  font-size: 14px;
 }
 
 .mditor-mini textarea:focus {

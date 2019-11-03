@@ -6,7 +6,7 @@ import Login from '@/pages/commons/login'
 import NewRepository from '@/pages/commons/new_repository'
 import ImportRepository from '@/pages/commons/import_repository'
 
-import HomeFrame from '@/pages/home/frame'
+import UserHome from '@/pages/home/frame'
 import Overview from '@/pages/home/overview'
 import Repositories from '@/pages/home/repositories'
 import Articles from '@/pages/home/articles'
@@ -21,6 +21,7 @@ import Commit from '@/pages/repository/commit'
 import Commits from '@/pages/repository/commits'
 import Branches from '@/pages/repository/branches'
 import Issues from '@/pages/repository/issues'
+import Issue from '@/pages/repository/issue'
 import Settings from '@/pages/repository/settings'
 
 /* Article相关 */
@@ -69,6 +70,10 @@ const repositoryChildren = [
     name: 'issues',
     component: Issues
   }, {
+    path: 'issue/:issue',
+    name: 'issue',
+    component: Issue
+  }, {
     path: 'settings',
     name: 'settings',
     component: Settings
@@ -95,10 +100,10 @@ export default new Router({
       component: ImportRepository
     }, {
       path: '/:username',
-      component: HomeFrame,
+      component: UserHome,
       children: [{
         path: '',
-        name: 'overview',
+        name: 'user_home',
         component: Overview
       }, {
         path: 'repositories',

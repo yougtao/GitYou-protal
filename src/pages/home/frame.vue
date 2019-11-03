@@ -27,21 +27,36 @@
 </template>
 
 <script>
+import {getUser} from '../../assets/js/commons'
 
 export default {
   name: 'home',
   data() {
     return {
-      username: this.$route.params.username,
+      user: {},
       activeName: 'Overview'
     }
   },
+  created() {
+    const username = this.$route.params.username
+    if (username == null || username == '')
+      this.$router.push('')
+    this.user.username = username
+  },
+  mounted() {
+    // this.verifyUser()  // 暂时不要验证
+  },
   methods: {
     changeTab() {
+      if (this.user.username == null || this.user.username == '') {
+        this.$router.push({name: 'login'})
+        return
+      }
+
       if (this.activeName == 'overview')
-        this.$router.push('/' + this.username)
+        this.$router.push('/' + this.user.username)
       else
-        this.$router.push('/' + this.username + '/' + this.activeName)
+        this.$router.push('/' + this.user.username + '/' + this.activeName)
     }
   }
 }
@@ -50,7 +65,6 @@ export default {
 <style scoped>
 .el-container {
   margin: 30px auto;
-  max-width: 1024px;
-  
+  width: 1024px;
 }
 </style>

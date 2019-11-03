@@ -12,11 +12,13 @@
           <li v-for="item in issues">
             <div class="issue-item">
               <div class="item-head">
-                <div>
-                  <a @click="toIssue(item.id)" href="javascript:void(0)" class="item-title">{{item.title}}</a>
+                <div class="item-title">
+                  <a @click="toIssue(item.id)" href="javascript:void(0)">{{item.title}}</a>
                 </div>
-                <div>
-                  <span class="item-time">{{item.createTime}}</span>
+                <div class="item-info">
+                  <span class="item-id">#{{item.id}}</span>
+                  <span>{{item.resolved?'已解决':'未解决'}}</span>
+                  <span>发表于 {{ showTime(item.createTime)}}</span>
                 </div>
               </div>
               <div></div>
@@ -25,7 +27,7 @@
         </ul>
       </div>
       <div class="issue-edit">
-        <smd-editor :commit="commit"></smd-editor>
+        <smd-editor :title="true" :commit="commit"></smd-editor>
       </div>
     </div>
     <div class="content-paginate">
@@ -40,12 +42,14 @@
 
 <script>
 import SmdEditor from '../../components/basic/SmdEditor'
+import {itoTime} from '../../assets/js/commons'
 
 export default {
   name: 'issues',
   components: {SmdEditor},
   data() {
     return {
+      showTime: itoTime,
       repository: {
         user: '',
         name: ''
@@ -69,6 +73,7 @@ export default {
     pageList() {
       this.$http.get('/repo/issue/page', {
         params: {
+          user: this.repository.user,
           repository: this.repository.name,
           page: this.page.curPage
         }
@@ -79,7 +84,11 @@ export default {
       })
     },
     toIssue(id) {
-      console.log('跳转到issue')
+      this.$router.push({
+        name: 'issue', params: {
+          issue: id
+        }
+      })
     },
     commit(data) {
       console.log('提交成功, 数据: ', data)
@@ -94,9 +103,6 @@ export default {
 </script>
 
 <style scoped>
-a {
-  text-decoration-line: none;
-}
 
 /* 主体*/
 .issues-title {
@@ -142,17 +148,21 @@ a {
   text-align: left;
 }
 
-.item-title {
+.item-title a {
   font-weight: 600;
   font-size: 16px;
   color: #000;
 }
 
-.item-title:hover {
+.item-title a:hover {
   color: #0366d6;
 }
 
-.item-time {
+.item-info {
+  font-size: 12px;
+}
+
+.item-id {
   font-size: 14px;
 }
 

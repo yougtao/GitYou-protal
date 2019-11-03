@@ -267,12 +267,6 @@ export default {
 
 <style scoped>
 a {
-  text-decoration-line: none;
-  color: #0366d6;
-}
-
-a:hover {
-  text-decoration-line: underline;
   color: #0366d6;
 }
 

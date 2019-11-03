@@ -43,12 +43,22 @@ export default {
       console.log('密码重置')
     },
     login() {
-      this.$http.post('/user/auth/login', this.user).then(res => {
-        this.$message.success('登录成功')
-        const user = res.data.data
-        window.localStorage.setItem('User-info', JSON.stringify(user))
-        this.$router.push(this.backPath)
-      }).catch(res => {
+      this.$http.post('/user/auth/login', this.user).then(({data}) => {
+        this.$message.success({
+          message: '登录成功了',
+          duration: 1200
+        })
+        const user = data.data
+        if (this.backPath === '' || this.backPath === '/')
+          this.$router.push({
+            name: 'user_home', params: {
+              username: user.username
+            }
+          })
+        else
+          this.$router.push(this.backPath)
+      }).catch(({data}) => {
+        console.log(data)
         this.$message.error('登录失败')
       })
     }

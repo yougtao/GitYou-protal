@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import {getUser} from '../../assets/js/commons'
+
 export default {
   name: 'frame',
   data() {
@@ -46,8 +48,8 @@ export default {
     this.repository.user = this.$route.params.username
     this.repository.name = this.$route.params.repository
 
-    const userStr = document.cookie.split(';')[0].split('=')[1].split('.')[1]
-    this.user = JSON.parse(window.atob(userStr))
+    this.user = getUser()
+    console.log('这是repository的frame')
   },
   updated() {
     this.activeName = this.$route.name
@@ -86,7 +88,7 @@ a {
 .content-head {
   margin-bottom: 10px;
   border-bottom: 1px solid #e4e7ed;
-  padding-top: 20px;
+  padding: 20px 30px 0;
   background-color: #fafbfc;
 }
 
@@ -95,19 +97,21 @@ a {
 }
 
 .content-title {
-  max-width: 1024px;
+  width: 1024px;
   margin: 0 auto 20px;
   text-align: left;
 }
 
 .content-nav {
-  max-width: 1024px;
+  width: 1024px;
   margin: 0 auto;
 }
 
 .content-main {
   margin: 0 auto;
-  max-width: 1024px;
+  width: 1084px;
+  box-sizing: border-box;
+  padding: 0 30px;
 }
 
 /* content-title*/

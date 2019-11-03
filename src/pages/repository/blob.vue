@@ -84,9 +84,6 @@ export default {
 </script>
 
 <style scoped>
-a {
-  text-decoration-line: none;
-}
 
 /* 导航区域 */
 .content-nav {
