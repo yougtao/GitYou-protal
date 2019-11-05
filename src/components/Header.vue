@@ -13,8 +13,8 @@
       <div class="header-menu">
         <ul>
           <li class="menu-item" @click="toPages('/')">首页</li>
-          <li class="menu-item" @click="toUserPage('/repositories')">Repositories</li>
-          <li class="menu-item" @click="toUserPage('/articles')">Articles</li>
+          <li class="menu-item" @click="toUserPage('repositories')">Repositories</li>
+          <li class="menu-item" @click="toUserPage('articles')">Articles</li>
           <li class="menu-item" @click="toPages('/labels')">Labels</li>
           <li class="menu-item">About</li>
         </ul>
@@ -45,7 +45,7 @@
         </div>
       </div>
       <div v-if="isLogin" class="header-user dropdown">
-        <img :src="user.avatar"/>
+        <img :src="user.avatar" :alt="user.username"/>
         <a @click="" href="javascript:void(0)">{{user.username}}</a>
         <div class="dropdown-box">
           <div class="dropdown-arrow"></div>
