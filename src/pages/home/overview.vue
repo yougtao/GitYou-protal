@@ -102,6 +102,7 @@ export default {
     }
   },
   mounted() {
+    console.log('ovewview')
     this.user.username = this.$route.params.username
   },
   methods: {

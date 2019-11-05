@@ -1,20 +1,12 @@
 <template>
-  <div id="app">
-    <page-header/>
-    <router-view/>
-  </div>
+  <router-view id="app"/>
 </template>
 
 <script>
-import PageHeader from './components/Header'
+
 
 export default {
-  name: 'App',
-  components: {PageHeader},
-  updated() {
-    console.log('根组件(App)更新')
-    PageHeader.updated()
-  }
+  name: 'App'
 }
 </script>
 

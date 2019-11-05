@@ -97,10 +97,11 @@ export default {
       files: []
     }
   },
-  beforeRouteUpdate() {
-    console.log('genginx')
+  created() {
+    console.log('repository.branch.created()')
   },
   mounted() {
+    console.log('repository.branch.mounted()')
     this.repository.user = this.$route.params.username
     this.repository.name = this.$route.params.repository
     if (this.$parent.repository.curBranch !== '')

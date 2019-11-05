@@ -2,11 +2,12 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Index from '@/pages/index'
+import UserFrame from '@/pages/userFrame'
 import Login from '@/pages/commons/login'
 import NewRepository from '@/pages/commons/new_repository'
 import ImportRepository from '@/pages/commons/import_repository'
 
-import User from '@/pages/home/frame'
+import UserHome from '@/pages/home/frame'
 import Overview from '@/pages/home/overview'
 import Repositories from '@/pages/home/repositories'
 import Articles from '@/pages/home/articles'
@@ -68,7 +69,7 @@ const repositoryChildren = [
     params: {branch: 'master'}
   }, {
     path: 'branch/:branch',
-    name: 'repository-branch',
+    name: 'branch',
     component: Branch
   }, {
     path: 'branch/:branch/*',
@@ -129,12 +130,18 @@ export default new Router({
       component: ImportRepository
     }, {
       path: '/:username',
-      component: User,
-      children: userChildren
-    }, {
-      path: '/:username/:repository',
-      component: Repository,
-      children: repositoryChildren
+      component: UserFrame,
+      children: [
+        {
+          path: '',
+          component: UserHome,
+          children: userChildren
+        }, {
+          path: ':repository',
+          component: Repository,
+          children: repositoryChildren
+        }
+      ]
     }
   ]
 })

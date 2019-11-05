@@ -82,6 +82,7 @@ h2 {
   max-width: 800px;
 }
 
+
 .content-title {
   padding: 2px;
   border-bottom: 1px solid #e1e4e8;
