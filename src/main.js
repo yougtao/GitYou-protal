@@ -4,7 +4,6 @@ import Vue from 'vue'
 
 import ElementUI from 'element-ui'
 import HttpServer from './plugins/http.js'
-import Highlight from './plugins/highlight.js'
 import Common from './plugins/common'
 
 import 'element-ui/lib/theme-chalk/index.css'
@@ -17,8 +16,10 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 Vue.use(HttpServer)
-Vue.use(Highlight)
 Vue.use(Common)
+
+if (module.hot)
+  module.hot.accept()
 
 /* eslint-disable no-new */
 new Vue({
