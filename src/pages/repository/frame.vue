@@ -20,48 +20,42 @@
                   <path fill-rule="evenodd"
                         d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z"></path>
                 </svg>
-                <span>watch</span>
+                <span>{{watchOptions[attention.watch || 0]}}</span>
               </button>
               <div class="dropmenu-modal">
                 <div class="dropmenu-head">
                   <span>Notifications</span>
                 </div>
                 <ul class="dropmenu-list">
-                  <li class="selected">
+                  <li :class="attention.watch === index ? 'selected':''" v-for="(option, index) in watchOptions">
                     <svg viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true">
                       <path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path>
                     </svg>
-                    <span>Not watching</span>
-                  </li>
-                  <li>
-                    <svg viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true">
-                      <path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path>
-                    </svg>
-                    <span>Not watching</span>
+                    <span @click="changeAttention('watch', index)">{{option}}</span>
                   </li>
                 </ul>
               </div>
             </div>
-            <a class="right" href="javascript:void(0)">0</a>
+            <a class="right" href="javascript:void(0)">{{repository.watch || 0}}</a>
           </div>
           <div class="btn-star btn-wrap">
-            <button class="left">
+            <button @click="changeAttention('star', !attention.star)" class="left">
               <svg viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true">
                 <path fill-rule="evenodd" d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z"></path>
               </svg>
-              <span>Star</span>
+              <span>{{attention.star? 'Unstar':'Star'}}</span>
             </button>
-            <a class="right" href="javascript:void(0)">0</a>
+            <a class="right" href="javascript:void(0)">{{repository.star || 0}}</a>
           </div>
           <div class="btn-fork btn-wrap">
-            <button class="left">
+            <button class="left" :class="(this.user.id == this.repository.userId) || this.attention.fork ? 'disabled': ''">
               <svg viewBox="0 0 10 16" version="1.1" width="10" height="16" aria-hidden="true">
                 <path fill-rule="evenodd"
                       d="M8 1a1.993 1.993 0 00-1 3.72V6L5 8 3 6V4.72A1.993 1.993 0 002 1a1.993 1.993 0 00-1 3.72V6.5l3 3v1.78A1.993 1.993 0 005 15a1.993 1.993 0 001-3.72V9.5l3-3V4.72A1.993 1.993 0 008 1zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3 10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3-10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path>
               </svg>
               <span>Fork</span>
             </button>
-            <a class="right" href="javascript:void(0)">0</a>
+            <a class="right" href="javascript:void(0)">{{repository.fork || '0'}}</a>
           </div>
         </div>
       </div>
@@ -100,7 +94,9 @@ export default {
         user: '',
         name: '',
         curBranch: ''
-      }
+      },
+      attention: {},
+      watchOptions: ['Not watching', 'Releases only', 'Watching', 'Ignoring']
     }
   },
   created() {
@@ -153,10 +149,46 @@ export default {
         this.repository.description = data.description
         this.repository.type = data.type
         this.repository.language = data.language
+        this.repository.watch = data.watch
+        this.repository.star = data.star
+        this.repository.fork = data.fork
         if (this.repository.curBranch == null || this.repository.curBranch == '') {
           this.repository.curBranch = data.defaultBranch
         }
         this.repository.createTime = data.createTime
+
+        // 获取关注信息信息
+        this.attentionInfo()
+      })
+    },
+    attentionInfo() {
+      if (this.user == null || this.user.id == null) return
+      this.$http.get('/repo/attention', {
+        params: {
+          user: this.user.id,
+          repository: this.repository.id
+        }
+      }).then(({data}) => {
+        this.attention = data
+      })
+    },
+    changeAttention(type, value) {
+      // todo: 如果是fork, 还有更复杂的逻辑
+      if (this.user == null || this.user.id == null) {
+        this.$router.push({name: 'login'})
+      }
+      let attention = {user: this.user.id, repository: this.repository.id}
+      attention[type] = value
+      this.$http.put('/repo/attention/' + type, attention).then(({data}) => {
+        if (!data)
+          console.log('更新失败!')
+        this.attention[type] = value
+        if (type == 'star')
+          this.repository.star += value ? 1 : -1
+        else if (type == 'watch')
+          this.repository.watch += value !== 0 ? 1 : -1
+        else if (type === 'fork')
+          this.repository.fork += value ? 1 : 0
       })
     },
     toUser() {
@@ -236,6 +268,10 @@ export default {
   font-size: 14px;
   cursor: pointer;
   color: #586069;
+}
+
+.content-head nav a:hover {
+  text-decoration-line: none;
 }
 
 .content-head nav a.active {
