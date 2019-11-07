@@ -104,7 +104,6 @@ export default {
     }
   },
   created() {
-    console.log('frame create()函数')
     if (this.$route.name === 'repository-home' || this.$route.name === 'branch-fileList')
       this.activeTab = 'branch'
     else
@@ -113,18 +112,15 @@ export default {
     this.repository.name = this.$route.params.repository
 
     this.user = getUser()
-  },
-  updated() {
-    console.log('frame updata()函数')
+    this.repositoryInfo()
   },
   methods: {
     changeTab(tab) {
-      console.log('切换Tab: \n', '\ttab: ', tab, '\tthis.activeTab: ', this.activeTab)
       if (this.activeTab === tab) return
-      this.activeTab = tab
       switch (tab) {
         case 'branch':
         case 'commits':
+          if (this.repository.curBranch === '') return
           this.$router.push({
             name: tab, params: {
               username: this.repository.user,
@@ -141,6 +137,27 @@ export default {
             }
           })
       }
+      this.activeTab = tab
+    },
+    repositoryInfo() {
+      this.$http.get('/repo/repository/name', {
+        params: {
+          user: this.repository.user,
+          name: this.repository.name
+        }
+      }).then(({data}) => {
+        this.repository.id = data.id
+        this.repository.name = data.name
+        this.repository.userId = data.userId
+        this.repository.user = data.username
+        this.repository.description = data.description
+        this.repository.type = data.type
+        this.repository.language = data.language
+        if (this.repository.curBranch == null || this.repository.curBranch == '') {
+          this.repository.curBranch = data.defaultBranch
+        }
+        this.repository.createTime = data.createTime
+      })
     },
     toUser() {
       this.$router.push('/' + this.repository.user + '/repositories')

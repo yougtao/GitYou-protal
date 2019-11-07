@@ -6,7 +6,7 @@
     <div class="content-button group-line">
       <div class="left">
         <div class="btn-dropdown">
-          <button>Branch: {{ repository.curBranch }}</button>
+          <button>Branch: {{ curBranch }}</button>
           <div class="dropmenu-modal">
             <div class="dropmenu-head">选择 Branches/tags</div>
             <div>
@@ -22,7 +22,7 @@
                 </div>
               </div>
               <ul class="dropmenu-list">
-                <li class="selected" @click="switchBranch(branch.name)" v-for="branch in branches" :key="branch.name">{{branch.name}}</li>
+                <li class="selected" @click="curBranch = branch.name" v-for="branch in branches" :key="branch.name">{{branch.name}}</li>
               </ul>
             </div>
           </div>
@@ -106,15 +106,16 @@ export default {
           message: '',
           time: ''
         },
-        curBranch: '',
         curPath: ''
       },
+      curBranch: '',  // 不要在vue中使用深度watch
       branches: [],
       tags: [],
       files: []
     }
   },
   created() {
+    this.curBranch = this.$parent.repository.curBranch
   },
   mounted() {
     this.repository.user = this.$route.params.username
@@ -132,8 +133,17 @@ export default {
     // 获取branch列表
     this.branchList()
 
-    // 获取文件列表
-    this.fileList(this.repository.curBranch, this.repository.curPath)
+  },
+  watch: {
+    curBranch: {
+      handler() {
+        console.log('branch更新: ', this.curBranch)
+        if (this.curBranch === null || this.curBranch === '') return
+        this.$parent.repository.curBranch = this.curBranch
+        this.fileList(this.repository.curPath)
+      },
+      immediate: true
+    }
   },
   computed: {
     clonePath() {
@@ -198,20 +208,20 @@ export default {
         this.repository.description = data.description
         this.repository.type = data.type
         this.repository.language = data.language
-        if (this.repository.curBranch == null || this.repository.curBranch == '') {
+        if (this.curBranch == null || this.curBranch == '') {
           this.$parent.repository.curBranch = data.defaultBranch
-          this.repository.curBranch = data.defaultBranch
+          this.curBranch = data.defaultBranch
         }
         this.repository.createTime = data.createTime
       })
     },
     // 获取文件列表
-    fileList(branch, path) {
+    fileList(path) {
       this.$http.get('/repo/file/list', {
         params: {
           user: this.repository.user,
           name: this.repository.name,
-          branch: branch,
+          branch: this.curBranch,
           path: path
         }
       }).then(({data}) => {
@@ -238,12 +248,6 @@ export default {
         this.branches = data
       })
     },
-    /* 切换branch */
-    switchBranch(branch) {
-      this.$parent.repository.curBranch = branch
-      this.repository.curBranch = branch
-      this.fileList(this.repository.curBranch, this.repository.curPath)
-    },
     /* 转到提交 */
     toCommit(name) {
       this.$router.push('/' + this.repository.user + '/' + this.repository.name + '/commit/' + name)
@@ -267,7 +271,7 @@ export default {
       }
       this.$router.replace(baseUrl + this.repository.curPath)
       // 切换文件列表
-      this.fileList(this.repository.curBranch, this.repository.curPath)
+      this.fileList(this.repository.curPath)
 
     },
     toFile(file) {
