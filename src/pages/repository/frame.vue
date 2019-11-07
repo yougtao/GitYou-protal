@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content-head">
-      <div class="content-title">
+      <div class="content-title group-line">
         <div class="repository-title">
           <svg viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true">
             <path
@@ -14,23 +14,34 @@
         </div>
         <div class="repository-operation">
           <div class="btn-watch btn-wrap">
-            <details class="drop-select left">
-              <summary class="">
+            <div class="btn-dropdown left">
+              <button class="">
                 <svg viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
                   <path fill-rule="evenodd"
                         d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z"></path>
                 </svg>
                 <span>watch</span>
-              </summary>
-              <details-menu>
-                <div class="title">
+              </button>
+              <div class="dropmenu-modal">
+                <div class="dropmenu-head">
                   <span>Notifications</span>
                 </div>
-                <div class="options">
-                  <a href="javascript:void(0)">Not watching</a>
-                </div>
-              </details-menu>
-            </details>
+                <ul class="dropmenu-list">
+                  <li class="selected">
+                    <svg viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path>
+                    </svg>
+                    <span>Not watching</span>
+                  </li>
+                  <li>
+                    <svg viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path>
+                    </svg>
+                    <span>Not watching</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
             <a class="right" href="javascript:void(0)">0</a>
           </div>
           <div class="btn-star btn-wrap">
@@ -93,20 +104,23 @@ export default {
     }
   },
   created() {
-    this.activeTab = this.$route.name
+    console.log('frame create()函数')
+    if (this.$route.name === 'repository-home' || this.$route.name === 'branch-fileList')
+      this.activeTab = 'branch'
+    else
+      this.activeTab = this.$route.name
     this.repository.user = this.$route.params.username
     this.repository.name = this.$route.params.repository
 
     this.user = getUser()
   },
   updated() {
-    this.activeTab = this.$route.name
-    console.log('repository.activeTab: ', this.activeTab)
+    console.log('frame updata()函数')
   },
   methods: {
     changeTab(tab) {
+      console.log('切换Tab: \n', '\ttab: ', tab, '\tthis.activeTab: ', this.activeTab)
       if (this.activeTab === tab) return
-
       this.activeTab = tab
       switch (tab) {
         case 'branch':
@@ -146,16 +160,14 @@ export default {
 
 /* content-title*/
 .content-title {
-  display: flex;
-  justify-content: space-between;
   width: 1024px;
   margin: 0 auto 20px;
-  line-height: 28px;
 }
 
 .repository-title {
   display: inline-block;
   text-align: left;
+  font-size: 18px;
 }
 
 .repository-title svg {
@@ -180,7 +192,7 @@ export default {
   font-size: 0;
 }
 
-.repository-operation > div{
+.repository-operation > div {
   margin-left: 12px;
 }
 
@@ -209,7 +221,7 @@ export default {
   color: #586069;
 }
 
-.content-head a.active {
+.content-head nav a.active {
   border-color: #e36209 #e1e4e8 transparent;
   border-bottom: none;
   color: #000;

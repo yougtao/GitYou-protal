@@ -3,18 +3,33 @@
     <div class="content-description">
       <p>{{ repository.description }}</p>
     </div>
-    <div class="content-button">
-      <div class="btn-left">
-        <el-dropdown class="branch-btn" trigger="click" @command="switchBranch">
-          <el-button size="small">
-            Branch: {{ repository.curBranch }}<i class="el-icon-arrow-down el-icon--right"></i>
-          </el-button>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="branch in branches" :key="branch.name" :command="branch.name">{{branch.name}}</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+    <div class="content-button group-line">
+      <div class="left">
+        <div class="btn-dropdown">
+          <button>Branch: {{ repository.curBranch }}</button>
+          <div class="dropmenu-modal">
+            <div class="dropmenu-head">选择 Branches/tags</div>
+            <div>
+              <div class="dropmenu-filters">
+                <div class="text-filter">
+                  <input type="text"/>
+                </div>
+                <div class="tabs-filter">
+                  <ul>
+                    <li class="active">Branches</li>
+                    <li>Tags</li>
+                  </ul>
+                </div>
+              </div>
+              <ul class="dropmenu-list">
+                <li class="selected" @click="switchBranch(branch.name)" v-for="branch in branches" :key="branch.name">{{branch.name}}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <button>New pull request</button>
       </div>
-      <div class="btn-right">
+      <div class="right">
         <el-popover class="clone-btn" placement="bottom" title="克隆仓库" width="400" trigger="click">
           <div>
             <el-input readonly v-model="clonePath" size="small" style="margin: 10px 0 20px;user-select: all">
@@ -29,11 +44,13 @@
       </div>
     </div>
     <div class="content-title">
-      <img/>
-      <a class="commit-author" @click="toCommits(repository.user)" href="javascript:void(0)">{{ repository.user }}</a>
-      <a class="commit-content" @click="toCommit(repository.lastCommit.commit)" href="javascript:void(0)">{{ repository.lastCommit.message
-        }}</a>
-      <div class=" commit-info">
+      <div>
+        <img/>
+        <a class="commit-author" @click="toCommits(repository.user)" href="javascript:void(0)">{{ repository.user }}</a>
+        <a class="commit-content" @click="toCommit(repository.lastCommit.commit)" href="javascript:void(0)">{{ repository.lastCommit.message
+          }}</a>
+      </div>
+      <div class="commit-info">
         <a class="commit-name" @click="toCommit(repository.lastCommit.commit)" href="javascript:void(0)">{{
           repository.lastCommit.commit }}</a>
         <span class="commit-time">{{ showTime(repository.lastCommit.time) }}</span>
@@ -98,10 +115,8 @@ export default {
     }
   },
   created() {
-    console.log('repository.branch.created()')
   },
   mounted() {
-    console.log('repository.branch.mounted()')
     this.repository.user = this.$route.params.username
     this.repository.name = this.$route.params.repository
     if (this.$parent.repository.curBranch !== '')
@@ -271,12 +286,6 @@ a {
   color: #0366d6;
 }
 
-button {
-  padding: 6px 12px;
-  font-size: 14px;
-  font-weight: 500;
-}
-
 .content-description {
   text-align: left;
   font-size: 16px;
@@ -285,32 +294,20 @@ button {
 
 .content-button {
   margin: 20px 0;
-  font-size: 0;
-}
-
-.btn-left {
-  display: inline-block;
-  width: 50%;
-  text-align: left;
-}
-
-.btn-right {
-  display: inline-block;
-  width: 50%;
-  text-align: right;
 }
 
 .clone-btn {
 }
 
 .content-title {
+  display: flex;
+  justify-content: space-between;
   margin-top: 20px;
   border: 1px solid #c8e1ff;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   padding: 8px;
   background-color: #f1f8ff;
-  text-align: left;
 }
 
 .content-title span {

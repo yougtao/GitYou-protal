@@ -64,7 +64,7 @@
 }
 
 
-/* 按钮 .btn-wrap */
+/* 组合按钮 .btn-wrap */
 .btn-wrap {
     display: inline-block;
     font-size: 0;
@@ -102,12 +102,18 @@
     outline: none;
 }
 
-.btn-wrap > .left {
+.btn-wrap > button.left,
+.btn-wrap > .left button {
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
-.btn-wrap > .right {
+.btn-wrap > button.right,
+.btn-wrap > .right button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
@@ -125,64 +131,128 @@
     text-decoration-line: none;
 }
 
+/* button-dropdown */
+.btn-dropdown {
+    display: inline-block;
+}
 
-/* 下拉选择 .drop-select */
-details.drop-select {
+.btn-dropdown button {
     position: relative;
+    border-radius: 3px;
+}
+
+.btn-dropdown button:after {
     display: inline-block;
-    padding: 0;
+    margin-left: 5px;
+    width: 0;
+    vertical-align: -2px;
+    content: "";
+    border: 4px solid transparent;
+    border-top-color: currentcolor;
 }
 
-.drop-select summary::-webkit-details-marker {
-    display: none;
-}
-
-.drop-select summary::-moz-list-bullet {
-    display: none;
-}
-
-.drop-select summary {
-    position: static;
-    display: inline-block;
-    padding: 3px 10px;
-    list-style: none;
-    user-select: none;
-    outline: none;
-}
-
-.drop-select details-menu {
-    display: none;
+.btn-dropdown .dropmenu-modal {
     position: absolute;
-    top: 100%;
-    margin-top: 4px;
+    display: none;
+    margin-top: 3px;
     border: 1px solid rgba(27, 31, 35, .15);
     border-radius: 3px;
     box-shadow: 0 3px 12px rgba(27, 31, 35, .15);
-    width: 300px;
+    min-width: 300px;
     background-color: #fff;
     background-clip: padding-box;
+    font-size: 14px;
     z-index: 99;
 }
 
-.drop-select details-menu > .title {
+.btn-dropdown > button:focus ~ .dropmenu-modal,
+.btn-dropdown .dropmenu-modal:hover:active {
+    display: block; /* 应该由程序实现 */
+}
+
+.btn-dropdown .dropmenu-head {
     border-bottom: 1px solid #e1e4e8;
-    padding: 8px 10px;
-    background: #f6f8fa;
-    line-height: 16px;
+    padding: 8px 12px;
+    font-size: 14px;
+    background: rgb(246, 248, 250);
+    font-weight: 600;
 }
 
-.drop-select details-menu > .options {
+.btn-dropdown .dropmenu-filters {
+    background: rgb(246, 248, 250);
+}
+
+.btn-dropdown .dropmenu-filters > div {
+    padding: 10px 10px 0;
+}
+
+.btn-dropdown .tabs-filter ul {
+    list-style: none;
+    display: flex;
+    justify-content: left;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.btn-dropdown .tabs-filter li {
+    padding: 4px 8px;
+}
+
+.btn-dropdown .tabs-filter li.active {
+    position: relative;
+    top: 1px;
+    border: 1px solid #e1e4e8;
+    border-bottom: none;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    background: #fff;
+}
+
+
+.btn-dropdown .dropmenu-filters > div:last-child {
+    border-bottom: 1px solid #dfe2e5;
+}
+
+.btn-dropdown .dropmenu-filters > .text-filter:last-child {
+    padding: 10px;
+}
+
+.btn-dropdown .dropmenu-list {
+    position: relative;
+    display: block;
+    list-style: none;
+}
+
+.btn-dropdown .dropmenu-list > * {
+    display: inline-block;
     padding: 10px 10px 10px 30px;
+    width: 100%;
+    line-height: 20px;
+    box-sizing: border-box;
+    cursor: pointer;
 }
 
-.drop-select details-menu > .options:not(:last-child) {
+.btn-dropdown .dropmenu-list > *:hover {
+    color: #fff;
+    background: rgb(3, 102, 214);
+}
+
+.btn-dropdown .dropmenu-list > *:not(:last-child) {
     border-bottom: 1px solid #eaecef;
 }
 
-.drop-select > summary:focus ~ details-menu,
-.drop-select details-menu:hover:active {
-    display: block;
+.btn-dropdown .dropmenu-list > li > svg {
+    display: none;
 }
+
+/* Todo: 有待改进 */
+.btn-dropdown .dropmenu-list > li.selected > svg {
+    display: inline-block;
+    margin-left: -16px;
+}
+
+
+
 
 
 
