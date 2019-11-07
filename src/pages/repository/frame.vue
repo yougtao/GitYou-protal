@@ -69,6 +69,7 @@
         <a @click="changeTab('branches')" :class="activeTab === 'branches'?'active':''">Branches</a>
         <a @click="changeTab('commits')" :class="activeTab === 'commits'?'active':''">Commits</a>
         <a @click="changeTab('issues')" :class="activeTab === 'issues'?'active':''">Issues</a>
+        <a @click="changeTab('insights')" :class="activeTab === 'insights'?'active':''">Insights</a>
         <a v-if="user.username === repository.user" @click="changeTab('repository_settings')"
            :class="activeTab === 'repository_settings'?'active':''">Settings
         </a>
@@ -114,24 +115,20 @@ export default {
     changeTab(tab) {
       if (this.activeTab === tab) return
       switch (tab) {
+        case 'insights':
+          this.$router.push({name: 'activity'})
+          break
         case 'branch':
         case 'commits':
           if (this.repository.curBranch === '') return
           this.$router.push({
             name: tab, params: {
-              username: this.repository.user,
-              repository: this.repository.name,
               branch: this.repository.curBranch
             }
           })
           break
         default:
-          this.$router.push({
-            name: tab, params: {
-              username: this.repository.user,
-              repository: this.repository.name
-            }
-          })
+          this.$router.push({name: tab})
       }
       this.activeTab = tab
     },

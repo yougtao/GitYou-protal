@@ -138,14 +138,14 @@ export default {
 
     // 获取branch列表
     this.branchList()
-
   },
   watch: {
     curBranch: {
       handler() {
-        console.log('branch更新: ', this.curBranch)
         if (this.curBranch === null || this.curBranch === '') return
         this.$parent.repository.curBranch = this.curBranch
+        if (this.$parent.repository.curBranch !== this.curBranch)
+          this.$router.push({name: this.$route.name, params: {branch: this.curBranch}})
         this.fileList(this.repository.curPath)
       },
       immediate: true

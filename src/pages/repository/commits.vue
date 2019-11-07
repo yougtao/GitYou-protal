@@ -75,7 +75,7 @@ export default {
     this.repository.user = this.$route.params.username
     this.repository.name = this.$route.params.repository
     if (this.$route.name === 'commits')
-      this.repository.curBranch = this.$route.params.branch
+      this.repository.curBranch = this.$parent.repository.curBranch
     else if (this.$route.name === 'commits-query')
       this.repository.curBranch = ''
     this.conditions.author = this.$route.query.author

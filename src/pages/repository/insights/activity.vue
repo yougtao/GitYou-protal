@@ -1,10 +1,10 @@
 <template>
-  <div>收藏</div>
+  <div>activity</div>
 </template>
 
 <script>
 export default {
-  name: 'stats'
+  name: 'activity'
 }
 </script>
 
