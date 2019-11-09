@@ -27,11 +27,12 @@
                   <span>Notifications</span>
                 </div>
                 <ul class="dropmenu-list">
-                  <li :class="attention.watch === index ? 'selected':''" v-for="(option, index) in watchOptions">
+                  <li v-for="(option, index) in watchOptions" @click="changeAttention('watch', index)"
+                      :class="attention.watch === index ? 'selected':''">
                     <svg viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true">
                       <path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path>
                     </svg>
-                    <span @click="changeAttention('watch', index)">{{option}}</span>
+                    <span>{{option}}</span>
                   </li>
                 </ul>
               </div>
@@ -171,21 +172,15 @@ export default {
     },
     changeAttention(type, value) {
       // todo: 如果是fork, 还有更复杂的逻辑
+      console.log('修改attention: ', value)
       if (this.user == null || this.user.id == null) {
         this.$router.push({name: 'login'})
       }
       let attention = {user: this.user.id, repository: this.repository.id}
       attention[type] = value
       this.$http.put('/repo/attention/' + type, attention).then(({data}) => {
-        if (!data)
-          console.log('更新失败!')
-        this.attention[type] = value
-        if (type == 'star')
-          this.repository.star += value ? 1 : -1
-        else if (type == 'watch')
-          this.repository.watch += value !== 0 ? 1 : -1
-        else if (type === 'fork')
-          this.repository.fork += value ? 1 : 0
+        if (data)
+          this.attentionInfo()
       })
     },
     toUser() {

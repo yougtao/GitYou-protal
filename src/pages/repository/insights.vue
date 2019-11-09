@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="content-left"></div>
-    <div class="content-right">
-      <router-view></router-view>
-    </div>
+    <router-view class="content-right"></router-view>
   </div>
 </template>
 

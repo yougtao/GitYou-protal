@@ -5,7 +5,9 @@ function getUser() {
   let cookies = document.cookie.split(';')
   for (let e of cookies) {
     if (e.startsWith(cookieName)) {
-      const value = e.substring(e.indexOf('=') + 1)
+      const index = e.indexOf('=')
+      if (index === e.length - 1) return {}
+      const value = e.substring(index + 1)
       // 分割字符串
       const userInfo = value.split('.')[1]
       let user = window.atob(userInfo)
