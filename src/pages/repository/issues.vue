@@ -13,10 +13,10 @@
             <div class="issue-item">
               <div class="item-head">
                 <div class="item-title">
-                  <a @click="toIssue(item.id)" href="javascript:void(0)">{{item.title}}</a>
+                  <a @click="toIssue(item.number)" href="javascript:void(0)">{{item.title}}</a>
                 </div>
                 <div class="item-info">
-                  <span class="item-id">#{{item.id}}</span>
+                  <span class="item-id">#{{item.number}}</span>
                   <span>{{item.resolved?'已解决':'未解决'}}</span>
                   <span>发表于 {{ showTime(item.createTime)}}</span>
                 </div>
@@ -90,8 +90,18 @@ export default {
         }
       })
     },
-    commit(data) {
-      console.log('提交成功, 数据: ', data)
+    commit(title, content) {
+      let issue = {
+        repository: this.$parent.repository.id,
+        authorId: this.$parent.user.id,
+        title: title,
+        content: content,
+        label: 0
+      }
+      this.$http.post('/repo/issue', issue).then(({data}) => {
+        this.$message.success({message: '发表成功!', duration: 1200})
+        this.pageList()
+      })
     },
     /* 改变页码 */
     changePage(page) {

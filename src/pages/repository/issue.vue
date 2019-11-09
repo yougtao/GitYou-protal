@@ -129,11 +129,8 @@ export default {
     this.maked = doMaked()
     this.self = getUser()
 
-    // 获取Issue信息
+    // 获取Issue信息, 在方法中获取comment列表
     this.issueInfo()
-
-    // 获取 comment列表
-    this.commentList()
 
     this.userInfo()
   },
@@ -155,20 +152,17 @@ export default {
         }
       }).then(({data}) => {
         Object.assign(this.issue, data)
-        console.log(this.issue)
+        // 获取评论列表
+        this.commentList()
       })
     },
     commentList() {
       this.$http.get('/repo/issue/comments', {
         params: {
-          user: this.issue.username,
-          repository: this.issue.repository,
-          issue: this.issue.number
+          issue: this.issue.id
         }
       }).then(({data}) => {
         this.issue.comments = data
-        //for (let i = 0; i < data.length; i++)
-        //document.getElementsByClassName('comment-content')[i].innerHTML = this.maked(data[i].content)
       })
     },
     loadContent(content) {

@@ -1,7 +1,7 @@
 <template>
   <div class="mditor-mini" :title="false" :commit="commit">
     <div v-if="title" class="mditor-title">
-      title
+      <input type="text" placeholder="Issue 标题" v-model="issue.title">
     </div>
     <div class="mditor-mini-bar">
       <div class="mditor-mini-tab">
@@ -81,7 +81,6 @@
     <div class="mditor-main">
       <div id="md_preview" class="mditor-mini-preview article"></div>
       <div class="mditor-mini-edit"><textarea id="md_editor"></textarea></div>
-    
     </div>
     <div class="mditor-buttons">
       <div class="mditor-btn-commit"></div>
@@ -104,6 +103,10 @@ export default {
   },
   data() {
     return {
+      issue: {
+        title: '',
+        content: ''
+      },
       action_config: {
         head: '### ',
         bold: '**{{加粗}}**',
@@ -205,7 +208,7 @@ export default {
       }
     },
     btn_action() {
-      this.commit && this.commit(this._$textarea.value)
+      this.commit && this.commit(this.issue.title, this._$textarea.value)
     }
   }
 }
@@ -224,11 +227,14 @@ export default {
   background-color: #fff;
 }
 
+.mditor-title {
+  padding: 8px;
+}
+
 .mditor-mini-bar {
   height: 36px;
   padding: 8px 8px 0;
   border-bottom: 1px solid #d1d5da;
-  background: #f6f8fa;
 }
 
 .mditor-mini-tab {
@@ -309,12 +315,12 @@ export default {
 }
 
 .mditor-mini-edit {
-  padding: 8px;
 }
 
 .mditor-main textarea {
   border: 1px solid #d1d5da;
   border-radius: 3px;
+  padding: 8px;
   resize: vertical;
   box-sizing: border-box;
   width: 100%;
