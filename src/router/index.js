@@ -7,13 +7,17 @@ import Login from '@/pages/commons/login'
 import NewRepository from '@/pages/commons/new_repository'
 import ImportRepository from '@/pages/commons/import_repository'
 
-import UserHome from '@/pages/home/frame'
-import Overview from '@/pages/home/overview'
-import Repositories from '@/pages/home/repositories'
-import Articles from '@/pages/home/articles'
+/* Home */
+import HomeFrame from '@/pages/HomeFrame'
 import Settings from '@/pages/home/settings'
+
+/* User*/
+import UserHome from '@/pages/user/frame'
+import Overview from '@/pages/user/overview'
+import Repositories from '@/pages/user/repositories'
+import Articles from '@/pages/user/articles'
 import Fragments from '@/pages/fragment/fragments'
-import Stars from '@/pages/home/stars'
+import Stars from '@/pages/user/stars'
 
 /* 代码仓库相关 */
 import Repository from '@/pages/repository/frame'
@@ -42,8 +46,7 @@ const userChildren = [
   {path: '', name: 'user_home', component: Overview},
   {path: 'repositories', name: 'repositories', component: Repositories},
   {path: 'articles', name: 'articles', component: Articles},
-  {path: 'fragments', name: 'fragments', component: Fragments},
-  {path: 'settings', name: 'settings', component: Settings}
+  {path: 'fragments', name: 'fragments', component: Fragments}
 ]
 
 /* /:username/:repository子路由 */
@@ -75,9 +78,13 @@ export default new Router({
   routes: [
     {path: '/', name: 'index', component: Index},
     {path: '/login', name: 'login', component: Login},
-    {path: '/repository/new', name: 'new_repository', component: NewRepository},
-    {path: '/repository/import', name: 'import_repository', component: ImportRepository},
     {
+      path: '', component: HomeFrame, children: [
+        {path: 'settings', name: 'settings', component: Settings},
+        {path: 'new', name: 'new_repository', component: NewRepository},
+        {path: 'import', name: 'import_repository', component: ImportRepository}
+      ]
+    }, {
       path: '/:username', component: UserFrame, children: [
         {path: '', component: UserHome, children: userChildren},
         {path: ':repository', component: Repository, children: repositoryChildren}
