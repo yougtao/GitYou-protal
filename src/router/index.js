@@ -10,6 +10,14 @@ import ImportRepository from '@/pages/commons/import_repository'
 /* Home */
 import HomeFrame from '@/pages/HomeFrame'
 import Settings from '@/pages/home/settings'
+import SettingsProfile from '@/pages/home/settings/Profile'
+import SettingsAccount from '@/pages/home/settings/account'
+import SettingsSecurity from '@/pages/home/settings/security'
+import SettingsEmails from '@/pages/home/settings/emails'
+import SettingsNotifications from '@/pages/home/settings/notifications'
+import SettingsKeys from '@/pages/home/settings/keys'
+import SettingsBlocked from '@/pages/home/settings/blocked'
+import SettingsDeveloper from '@/pages/home/settings/developer'
 
 /* User*/
 import UserHome from '@/pages/user/frame'
@@ -74,13 +82,25 @@ const repositoryChildren = [
 ]
 
 
+const settingsChildren = [
+  {path: 'profile', name: 'profile', component: SettingsProfile},
+  {path: 'account', name: 'account', component: SettingsAccount},
+  {path: 'security', name: 'security', component: SettingsSecurity},
+  {path: 'emails', name: 'emails', component: SettingsEmails},
+  {path: 'notifications', name: 'notifications', component: SettingsNotifications},
+  {path: 'keys', name: 'keys', component: SettingsKeys},
+  {path: 'blocked', name: 'blocked', component: SettingsBlocked},
+  {path: 'developer', name: 'developer', component: SettingsDeveloper}
+]
+
+
 export default new Router({
   routes: [
     {path: '/', name: 'index', component: Index},
     {path: '/login', name: 'login', component: Login},
     {
       path: '', component: HomeFrame, children: [
-        {path: 'settings', name: 'settings', component: Settings},
+        {path: 'settings', redirect: 'settings/profile', component: Settings, children: settingsChildren},
         {path: 'new', name: 'new_repository', component: NewRepository},
         {path: 'import', name: 'import_repository', component: ImportRepository}
       ]

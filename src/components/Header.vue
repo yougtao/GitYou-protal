@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <div class="box">
+    <div class="index-box">
       <div class="logo-box" @click="toPages('/')">
         <i class="iconfont icon-github"></i>
       </div>
@@ -194,7 +194,7 @@ a:hover {
   justify-content: space-between;
 }
 
-.box {
+.index-box {
   padding: 9px 0;
   max-width: 1024px;
   display: flex;

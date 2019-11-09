@@ -215,7 +215,18 @@
 }
 
 
+/* settings相关 */
+.settings-item h2 {
+    margin-top: 20px;
+    border-bottom: 1px solid #e1e4e8;
+    padding-bottom: 10px;
+}
 
+.box {
+    border: 1px solid #e1e4e8;
+    border-radius: 3px;
+}
 
-
-
+.box-row:not(:last-child) {
+    border-bottom: 1px solid #e1e4e8;
+}
