@@ -55,7 +55,18 @@ function itoTime(time) {
   else return months + ' 个月前'
 }
 
+function verify(data, key) {
+  let reg = ''
+  if (key === 'email')
+    reg = /^[A-Za-z1-9]+([-_.][A-Za-z1-9]+)*@([A-Za-z1-9]+[-.])+[A-Za-z]{2,5}$/
+  else if (key === 'phone')
+    reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/
+  else
+    return false
+
+  return reg.test(data)
+}
 
 export {
-  getUser, itoTime
+  getUser, itoTime, verify
 }

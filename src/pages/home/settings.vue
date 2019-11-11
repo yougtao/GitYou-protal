@@ -22,10 +22,19 @@
 </template>
 
 <script>
+import {getUser} from '@/assets/js/commons'
+
 export default {
   name: 'settings',
   data() {
-    return {}
+    return {
+      user: {}
+    }
+  },
+  created() {
+    this.user = getUser()
+    if (this.user.id == null || this.user.id == '')
+      this.$router.push({name: 'login'})
   },
   methods: {}
 }

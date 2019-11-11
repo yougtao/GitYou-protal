@@ -83,7 +83,7 @@ const repositoryChildren = [
 
 
 const settingsChildren = [
-  {path: 'profile', name: 'profile', component: SettingsProfile},
+  {path: 'profile', name: 'settings-profile', component: SettingsProfile},
   {path: 'account', name: 'account', component: SettingsAccount},
   {path: 'security', name: 'security', component: SettingsSecurity},
   {path: 'emails', name: 'emails', component: SettingsEmails},
@@ -100,7 +100,7 @@ export default new Router({
     {path: '/login', name: 'login', component: Login},
     {
       path: '', component: HomeFrame, children: [
-        {path: 'settings', redirect: 'settings/profile', component: Settings, children: settingsChildren},
+        {path: 'settings',name: 'settings', redirect: 'settings/profile', component: Settings, children: settingsChildren},
         {path: 'new', name: 'new_repository', component: NewRepository},
         {path: 'import', name: 'import_repository', component: ImportRepository}
       ]
