@@ -60,6 +60,7 @@
 
 <script>
 import Vue from 'vue'
+import {itoTime} from '@/assets/js/commons'
 
 export default {
   name: 'commit',
@@ -182,7 +183,8 @@ export default {
     },
     toBranch(branch) {
       console.log('跳转到branch: ', branch)
-    }
+    },
+    showTime: itoTime
   },
   computed: {
     additionsNum: function () {
