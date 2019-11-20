@@ -54,7 +54,8 @@ const userChildren = [
   {path: '', name: 'user_home', component: Overview},
   {path: 'repositories', name: 'repositories', component: Repositories},
   {path: 'articles', name: 'articles', component: Articles},
-  {path: 'fragments', name: 'fragments', component: Fragments}
+  {path: 'fragments', name: 'fragments', component: Fragments},
+  {path: 'stars', name: 'stars', component: Stars}
 ]
 
 /* /:username/:repository子路由 */
@@ -69,7 +70,6 @@ const repositoryChildren = [
   {path: 'commits', name: 'commits-query', component: Commits},
   {path: 'issues', name: 'issues', component: Issues},
   {path: 'issue/:issue', name: 'issue', component: Issue},
-  {path: 'stars', name: 'stars', component: Stars},
   {
     path: '', component: Insights, children: [
       {path: 'activity', name: 'activity', component: Activity},

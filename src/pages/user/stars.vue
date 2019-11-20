@@ -1,5 +1,5 @@
 <template>
-  
+  <div>star页</div>
 </template>
 
 <script>
