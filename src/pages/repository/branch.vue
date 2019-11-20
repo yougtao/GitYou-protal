@@ -126,6 +126,7 @@ export default {
   mounted() {
     this.repository.user = this.$route.params.username
     this.repository.name = this.$route.params.repository
+    this.repository.id = this.$parent.repository.id
     if (this.$parent.repository.curBranch !== '')
       this.repository.curBranch = this.$parent.repository.curBranch
 

@@ -1,34 +1,66 @@
 <template>
   <div>
-    <div class="search-div">
-      <el-input v-model="condition.search" size="medium" placeholder="Find a repository..."></el-input>
-      <el-dropdown trigger="click" @command="conditionType">
-        <el-button size="medium">
-          Type: {{condition.type}}<i class="el-icon-arrow-down el-icon--right"></i>
-        </el-button>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="All">All</el-dropdown-item>
-          <el-dropdown-item command="Public">Public</el-dropdown-item>
-          <el-dropdown-item command="Private">Private</el-dropdown-item>
-          <el-dropdown-item command="Sources">Sources</el-dropdown-item>
-          <el-dropdown-item command="Forks">Forks</el-dropdown-item>
-          <el-dropdown-item command="Archived">Archived</el-dropdown-item>
-          <el-dropdown-item command="Mirrors">Mirrors</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      <el-dropdown trigger="click" @command="conditionLanguage">
-        <el-button size="medium">
-          Language: {{condition.language}}<i class="el-icon-arrow-down el-icon--right"></i>
-        </el-button>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="All">All</el-dropdown-item>
-          <el-dropdown-item command="Java">Java</el-dropdown-item>
-          <el-dropdown-item command="JavaScript">JavaScript</el-dropdown-item>
-          <el-dropdown-item command="Python">Python</el-dropdown-item>
-          <el-dropdown-item command="Vue">Vue</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      <el-button @click="new_repository" type="success" icon="el-icon-notebook-2" size="medium">New</el-button>
+    <div class="search-div content-button group-line">
+      <input type="text" placeholder="Find a repository"/>
+      <div class="btn-dropdown">
+        <button>Type: {{ condition.type }}</button>
+        <div class="dropmenu-modal">
+          <div class="dropmenu-head">type</div>
+          <ul class="dropmenu-list">
+            <li :class="condition.type === 'all' ? 'selected':''" @click="conditionType('all')">
+              <svg viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path>
+              </svg>
+              <span>All</span>
+            </li>
+            <li :class="condition.type === 'public' ? 'selected':''" @click="conditionType('public')">
+              <svg viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path>
+              </svg>
+              <span>Public</span>
+            </li>
+            <li :class="condition.type === 'private' ? 'selected':''" @click="conditionType('private')">
+              <svg viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path>
+              </svg>
+              <span>Private</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="btn-dropdown">
+        <button>Language: {{ condition.language }}</button>
+        <div class="dropmenu-modal">
+          <div class="dropmenu-head">选择语言: </div>
+          <ul class="dropmenu-list">
+            <li :class="condition.language === 'all' ? 'selected':''" @click="conditionLanguage('all')">
+              <svg viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path>
+              </svg>
+              <span>All</span>
+            </li>
+            <li :class="condition.language === 'java' ? 'selected':''" @click="conditionLanguage('java')">
+              <svg viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path>
+              </svg>
+              <span>Java</span>
+            </li>
+            <li :class="condition.language === 'php' ? 'selected':''" @click="conditionLanguage('php')">
+              <svg viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path>
+              </svg>
+              <span>Php</span>
+            </li>
+            <li :class="condition.language === 'javascript' ? 'selected':''" @click="conditionLanguage('javascript')">
+              <svg viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"></path>
+              </svg>
+              <span>Javascript</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <button>New Repository</button>
     </div>
     <div class="content">
       <el-row class="repo" v-for="(repo,index) in repositories" :key="index">
@@ -141,8 +173,8 @@ export default {
   padding: 5px 0 15px 0;
 }
 
-.search-div .el-input {
-  width: auto;
+.search-div > input {
+  min-width: 300px;
 }
 
 /* content*/
