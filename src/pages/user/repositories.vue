@@ -60,7 +60,7 @@
           </ul>
         </div>
       </div>
-      <button>New Repository</button>
+      <button class="success">New Repository</button>
     </div>
     <div class="content">
       <el-row class="repo" v-for="(repo,index) in repositories" :key="index">
@@ -103,8 +103,8 @@ export default {
       },
       condition: {
         search: '',
-        type: 'All',
-        language: 'All'
+        type: 'all',
+        language: 'all'
       },
       repositories: [],
       languageColors: ['', '#b07219'],

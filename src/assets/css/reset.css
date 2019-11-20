@@ -55,6 +55,12 @@ button.disabled {
     cursor: default;
 }
 
+button.success {
+    color: #fff;
+    background-color: #28a745;
+    background-image: linear-gradient(-180deg, #34d058, #28a745 90%);
+}
+
 button:not(.disabled):hover {
     border-color: rgba(27, 31, 35, .35);
     background-color: #e6ebf1;
@@ -71,6 +77,20 @@ button:not(.disabled):active {
 
 button:focus {
     outline: none;
+}
+
+button.success:hover {
+    background-color: #269f42;
+    background-image: linear-gradient(-180deg,#2fcb53,#269f42 90%);
+    background-position: -.5em;
+    border-color: rgba(27,31,35,.5);
+}
+
+button.success:active {
+    background-color: #279f43;
+    background-image: none;
+    border-color: rgba(27, 31, 35, .5);
+    box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, .15);
 }
 
 
