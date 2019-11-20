@@ -31,7 +31,7 @@
       <div class="btn-dropdown">
         <button>Language: {{ condition.language }}</button>
         <div class="dropmenu-modal">
-          <div class="dropmenu-head">选择语言: </div>
+          <div class="dropmenu-head">选择语言:</div>
           <ul class="dropmenu-list">
             <li :class="condition.language === 'all' ? 'selected':''" @click="conditionLanguage('all')">
               <svg viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true">
@@ -175,6 +175,7 @@ export default {
 
 .search-div > input {
   min-width: 300px;
+  width: auto;
 }
 
 /* content*/

@@ -10,14 +10,15 @@ import ImportRepository from '@/pages/commons/import_repository'
 /* Home */
 import HomeFrame from '@/pages/HomeFrame'
 import Settings from '@/pages/home/settings'
-import SettingsProfile from '@/pages/home/settings/Profile'
-import SettingsAccount from '@/pages/home/settings/account'
-import SettingsSecurity from '@/pages/home/settings/security'
-import SettingsEmails from '@/pages/home/settings/emails'
-import SettingsNotifications from '@/pages/home/settings/notifications'
-import SettingsKeys from '@/pages/home/settings/keys'
-import SettingsBlocked from '@/pages/home/settings/blocked'
-import SettingsDeveloper from '@/pages/home/settings/developer'
+import notifications from '@/pages/home/notifications'
+import SettingsProfile from '@/pages/home/settings/settings-Profile'
+import SettingsAccount from '@/pages/home/settings/settings-account'
+import SettingsSecurity from '@/pages/home/settings/settings-security'
+import SettingsEmails from '@/pages/home/settings/settings-emails'
+import SettingsNotifications from '@/pages/home/settings/settings-notifications'
+import SettingsKeys from '@/pages/home/settings/settings-keys'
+import SettingsBlocked from '@/pages/home/settings/settings-blocked'
+import SettingsDeveloper from '@/pages/home/settings/settings-developer'
 
 /* User*/
 import UserHome from '@/pages/user/frame'
@@ -84,13 +85,13 @@ const repositoryChildren = [
 
 const settingsChildren = [
   {path: 'profile', name: 'settings-profile', component: SettingsProfile},
-  {path: 'account', name: 'account', component: SettingsAccount},
-  {path: 'security', name: 'security', component: SettingsSecurity},
-  {path: 'emails', name: 'emails', component: SettingsEmails},
-  {path: 'notifications', name: 'notifications', component: SettingsNotifications},
-  {path: 'keys', name: 'keys', component: SettingsKeys},
-  {path: 'blocked', name: 'blocked', component: SettingsBlocked},
-  {path: 'developer', name: 'developer', component: SettingsDeveloper}
+  {path: 'account', name: 'settings-account', component: SettingsAccount},
+  {path: 'security', name: 'settings-security', component: SettingsSecurity},
+  {path: 'emails', name: 'settings-emails', component: SettingsEmails},
+  {path: 'notifications', name: 'settings-notifications', component: SettingsNotifications},
+  {path: 'keys', name: 'settings-keys', component: SettingsKeys},
+  {path: 'blocked', name: 'settings-blocked', component: SettingsBlocked},
+  {path: 'developer', name: 'settings-developer', component: SettingsDeveloper}
 ]
 
 
@@ -98,14 +99,14 @@ export default new Router({
   routes: [
     {path: '/', name: 'index', component: Index},
     {path: '/login', name: 'login', component: Login},
-    {
-      path: '', component: HomeFrame, children: [
-        {path: 'settings',name: 'settings', redirect: 'settings/profile', component: Settings, children: settingsChildren},
+    {path: '', component: HomeFrame, children: [
+        {path: 'settings', name: 'settings', redirect: 'settings/profile', component: Settings, children: settingsChildren},
+        {path: 'notifications', name: 'notifications', component: notifications},
         {path: 'new', name: 'new_repository', component: NewRepository},
         {path: 'import', name: 'import_repository', component: ImportRepository}
       ]
-    }, {
-      path: '/:username', component: UserFrame, children: [
+    },
+    {path: '/:username', component: UserFrame, children: [
         {path: '', component: UserHome, children: userChildren},
         {path: ':repository', component: Repository, children: repositoryChildren}
       ]
